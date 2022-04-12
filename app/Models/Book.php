@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * App\Models\Book
+ *
+ * @property int $id
+ * @property string $title
+ * @property int $genre_id
+ * @property string $authors
+ * @property string|null $description
+ * @property string $released_at
+ * @property string|null $cover_image
+ * @property int $pages
+ * @property string $language_code
+ * @property string $isbn
+ * @property int $in_stock
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Borrow[] $borrows
+ * @property-read int|null $borrows_count
+ * @property-read \App\Models\Genre|null $genres
+ * @method static \Illuminate\Database\Eloquent\Builder|Book newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Book newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Book query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereAuthors($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereCoverImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereGenreId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereInStock($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereIsbn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereLanguageCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book wherePages($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereReleasedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Book whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+class Book extends Model
+{
+    public function borrows()
+    {
+        return $this->hasMany(Borrow::class, 'book_id');
+    }
+
+    public function genres()
+    {
+        return $this->belongsTo(Genre::class, 'genre_id','id');
+    }
+
+    public function activeBorrows()
+    {
+        return $this->getAllBorrows()->where('status', '=', 'ACCEPTED');
+    }
+}

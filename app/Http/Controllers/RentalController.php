@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\Borrow;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class RentalController extends Controller
 {
@@ -39,22 +40,34 @@ class RentalController extends Controller
     public function myrental()
     {
         Paginator::defaultView('vendor.pagination.bootstrap-5');
-        $userid = session('user')['id'];
-        $pendings = Borrow::where('reader_id',$userid)->where('status','PENDING')->get();
-        $results = Borrow::where('reader_id',$userid)->where('status','PENDING')->orderBy("id")->paginate(5)->withQueryString();
-        $books = new Book();
-        foreach ($pendings as $pending)
+        // 这里添加此判断的原因是，如果用户在这个页面退出登陆，则跳转到主页
+        // 跳转在js中实现
+        if(!empty(session('user')))
         {
-            $bookname = $pending->books()->pluck('title')->first(); //红楼梦
-            $books = $books->orWhere('title',$bookname);
+            $userid = session('user')['id'];
+            $pendings = Borrow::where('reader_id',$userid)->where('status','PENDING')->get();
+            $results = Borrow::where('reader_id',$userid)->where('status','PENDING')->orderBy("id")->paginate(5)->withQueryString();
+            $books = new Book();
+            foreach ($pendings as $pending)
+            {
+                $bookname = $pending->books()->pluck('title')->first(); //红楼梦
+                $books = $books->orWhere('title',$bookname);
+            }
+            $books = $books->orderBy("id")->paginate(5)->withQueryString();
+            $data = [
+                'results' => $results,
+                'books' => $books
+            ];
+            return view('reader.rental',$data);
         }
-        $books = $books->orderBy("id")->paginate(5)->withQueryString();
-        $data = [
-            'results' => $results,
-            'books' => $books
-        ];
-        return view('reader.rental',$data);
     }
 
-
+    // 借阅详情
+    public function rentalDetail($id)
+    {
+        $borrow = Borrow::find($id);
+        return response()->json([
+            'data' => $borrow
+        ]);
+    }
 }

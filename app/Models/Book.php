@@ -57,4 +57,10 @@ class Book extends Model
     {
         return $this->getAllBorrows()->where('status', '=', 'ACCEPTED');
     }
+
+    // 修复时间戳输出格式
+    protected function serializeDate($date)
+    {
+        return $date->format('Y-m-d H:i');
+    }
 }

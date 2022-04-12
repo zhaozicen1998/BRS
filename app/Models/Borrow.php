@@ -65,4 +65,10 @@ class Borrow extends Model
     {
         return $this->belongsTo(Book::class, 'book_id');
     }
+
+    // 修复时间戳输出格式
+    protected function serializeDate($date)
+    {
+        return $date->format('Y-m-d H:i');
+    }
 }

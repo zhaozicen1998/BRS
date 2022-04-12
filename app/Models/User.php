@@ -92,4 +92,10 @@ class User extends Authenticatable
     public function managedReturns() {
         return $this->hasMany(Borrow::class, 'return_managed_by');
     }
+
+    // 修复时间戳输出格式
+    protected function serializeDate($date)
+    {
+        return $date->format('Y-m-d H:i');
+    }
 }

@@ -30,4 +30,10 @@ class Genre extends Model
     {
         return $this->hasMany(Book::class, 'genre_id','id');
     }
+
+    // 修复时间戳输出格式
+    protected function serializeDate($date)
+    {
+        return $date->format('Y-m-d H:i');
+    }
 }

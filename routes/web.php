@@ -35,3 +35,4 @@ Route::get('/genre',[SearchController::class,'genre']);
 
 Route::post('/borrow',[RentalController ::class,'borrow']);
 Route::get('/myrental',[RentalController::class,'myrental']);
+Route::get('/myrental/detail/{id}',[RentalController::class,'rentalDetail']);

@@ -419,9 +419,16 @@
             $('.log-out').click(function () {
                 $.getJSON("{{url('logout')}}", {}, function (res) {
                     $("#logoutSuccess").toast("show");
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 1000);
+                    if((window.location.href).indexOf('myrental') >= 0) {
+                        setTimeout(function () {
+                            window.open('{{url('/')}}');
+                        }, 1000);
+                    }
+                    else{
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                    }
                 });
             });
         })

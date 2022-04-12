@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Web engineering -- Laravel starter kit
 
 ## How to use it
@@ -8,3 +9,7 @@
 4. Implement the required application for the assignment!
 5. When you are ready to submit your solution, call `php artisan zip` to create statement, to check the project, and create the zip file to upload. The final version can be found in the `zipfiles` folder.
 6. Before submission check your project: extract it into a new folder, and start it with `init.bat`/`init.sh`! If it works, then you can submit the zip file (e.g. in Canvas).
+=======
+# BRS
+book rental system (BRS)
+>>>>>>> 5f8e6b1cf8e6d189b4f4c9641a7c0cc32fb02eb9

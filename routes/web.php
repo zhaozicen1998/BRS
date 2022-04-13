@@ -34,5 +34,12 @@ Route::get('/search/detail/{id}',[SearchController::class,'searchDetail']);
 Route::get('/genre',[SearchController::class,'genre']);
 
 Route::post('/borrow',[RentalController ::class,'borrow']);
+
 Route::get('/myrental',[RentalController::class,'myrental']);
+Route::get('/myrental/pending',[RentalController::class,'myrental']);
+Route::get('/myrental/accepted',[RentalController::class,'myrental']);
+Route::get('/myrental/late',[RentalController::class,'myrental']);
+Route::get('/myrental/rejected',[RentalController::class,'myrental']);
+Route::get('/myrental/returned',[RentalController::class,'myrental']);
+
 Route::get('/myrental/detail/{id}',[RentalController::class,'rentalDetail']);

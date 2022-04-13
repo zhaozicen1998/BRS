@@ -8,40 +8,52 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
-                    <nav class="nav nav-tabs">
-                        <a href="#" class="nav-item nav-link">Rental requests with PENDING status</a>
-                        <a href="#" class="nav-item nav-link">Accepted and in-time rentals</a>
-                        <a href="#" class="nav-item nav-link">Accepted late rentals</a>
-                        <a href="#" class="nav-item nav-link">Rejected rental requests</a>
-                        <a href="#" class="nav-item nav-link">Returned rentals</a>
-                    </nav>
-                    <table class="table table-hover table-striped" style="width: 95%;margin: 0 auto">
-                        <thead>
-                        <tr>
-                            <th scope="col">序号</th>
-                            <th scope="col">书名</th>
-                            <th scope="col">作者</th>
-                            <th scope="col">操作日期</th>
-                            <th scope="col">deadline</th>
-                            <th scope="col" class="text-center">详情</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @for($x = 0; $x < count($results); $x++)
+                    <ul class="nav nav-pills justify-content-center rentalMenu">
+                        <li class="nav-item">
+                            <a href="{{url('/myrental/pending')}}" class="nav-link active" data-id="pending">Rental requests with PENDING status</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/myrental/accepted')}}" class="nav-link" data-id="accepted">Accepted and in-time rentals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/myrental/late')}}" class="nav-link" data-id="late">Accepted late rentals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/myrental/rejected')}}" class="nav-link" data-id="rejected">Rejected rental requests</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/myrental/returned')}}" class="nav-link" data-id="returned">Returned rentals</a>
+                        </li>
+                    </ul>
+                    <div id="table-content">
+                        <table class="table table-hover table-striped" style="width: 95%;margin: 0 auto">
+                            <thead>
                             <tr>
-                                <th scope="row">{{$results[$x]['id']}}</th>>
-                                    <td>{{$books[$x]['title']}}</td>
-                                    <td>{{$books[$x]['authors']}}</td>
-                                <td>{{$results[$x]['created_at']}}</td>
-                                <td>{{$results[$x]['deadline']}}</td>
-                                <td class="text-center">
-                                    <button class="btn btn-success btn-xs" id="bookdetails" data-bs-target="#bookDetailModal" data-bs-toggle="modal" data-id="{{$books[$x]['id']}}">书本</button>
-                                    <button class="btn btn-success btn-xs" id="rentaldetails" data-bs-target="#rentalDetailModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">借阅</button>
-                                </td>
+                                <th scope="col">序号</th>
+                                <th scope="col">书名</th>
+                                <th scope="col">作者</th>
+                                <th scope="col">操作日期</th>
+                                <th scope="col">deadline</th>
+                                <th scope="col" class="text-center">详情</th>
                             </tr>
-                        @endfor
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            @for($x = 0; $x < count($results); $x++)
+                                <tr>
+                                    <th scope="row">{{$results[$x]['id']}}</th>>
+                                        <td>{{$books[$x]['title']}}</td>
+                                        <td>{{$books[$x]['authors']}}</td>
+                                    <td>{{$results[$x]['created_at']}}</td>
+                                    <td>{{$results[$x]['deadline']}}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-success btn-xs" id="bookdetails" data-bs-target="#bookDetailModal" data-bs-toggle="modal" data-id="{{$books[$x]['id']}}">书本</button>
+                                        <button class="btn btn-success btn-xs" id="rentaldetails" data-bs-target="#rentalDetailModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">借阅</button>
+                                    </td>
+                                </tr>
+                            @endfor
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -190,7 +202,7 @@
                 id = $(this).data('id');
                 // 发送此get时关闭ajax异步，否则后面的一个按钮判断会因为数据获取错误而失败
                 $.ajaxSettings.async = false;
-                $.get('search/' + 'detail/' + id, function (data) {
+                $.get('/search/' + 'detail/' + id, function (data) {
                     if(data.data.cover_image !== null) {
                         $('#d_image').attr('src',data.data.cover_image);
                     }
@@ -224,7 +236,13 @@
             $('body').on('click', '#rentaldetails', function (event) {
                 event.preventDefault();
                 rentid = $(this).data('id');
-                $.get('myrental/' + 'detail/' + rentid, function (data) {
+                $("#r_processed_at_div").show();
+                $('#r_request_managed_by_div').show();
+                $('#r_deadline_div').show();
+                $('#r_returned_at_div').show();
+                $('#r_return_managed_by_div').show();
+                $('#r_late_return_div').show();
+                $.get('/myrental/' + 'detail/' + rentid, function (data) {
                     $('#r_created_at').text(data.data.created_at);
                     $('#r_status').text(data.data.status);
                     $('#r_processed_at').text(data.data.request_processed_at);
@@ -268,6 +286,17 @@
                     }
                 })
             })
+
+            // 点击导航栏按钮
+            $('.rentalMenu').on('click', 'a', function(e) {
+                e.preventDefault(); // 阻止链接跳转
+                var url = this.href; // 保存点击的地址
+
+                $('a.active').removeClass('active');
+                $(this).addClass('active');
+
+                $('#table-content').load(url + ' #table-content').fadeIn('slow');
+            });
         })
     </script>
 

@@ -26,8 +26,8 @@ class IndexController extends Controller
     }
     public function test()
     {
-        $users = Genre::find(3)->books;
-        return $users;
-//        return view("test");
+//        $users = Genre::find(3)->books;
+//        return $users;
+        return view("test");
     }
 }

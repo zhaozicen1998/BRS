@@ -77,7 +77,7 @@
                 <div class="row modal-body">
                     <div class="form-group col-lg-6">
                         <div style="height: 360px" class="mt-3">
-                            <img id="d_image" src="{{asset("image/book/No_Image.png")}}" class="rounded img-fluid">
+                            <img id="d_image" alt="No_image" src="{{asset("image/book/No_Image.png")}}" class="rounded img-fluid">
                             <p id="d_description"></p>
                         </div>
                         <div class="form-group mb-3 col-lg-12">
@@ -152,7 +152,7 @@
             id = $(this).data('id');
             // 发送此get时关闭ajax异步，否则后面的一个按钮判断会因为数据获取错误而失败
             $.ajaxSettings.async = false;
-            $.get('search/' + 'detail/' + id, function (data) {
+            $.get('/search/' + 'detail/' + id, function (data) {
                 if(data.data.cover_image !== null) {
                     $('#d_image').attr('src',data.data.cover_image);
                 }

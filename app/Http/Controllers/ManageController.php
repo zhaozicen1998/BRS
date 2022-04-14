@@ -115,4 +115,22 @@ class ManageController extends Controller
         ];
         return view('genre.genre',$data);
     }
+
+    // 添加新流派
+    public function addGenre(Request $request)
+    {
+        $data = $request->input();
+        $exist = Genre::where('name',$data['name'])->where('style',$data['style'])->first();
+        if($exist != null)
+        {
+            return response()->json(array('code' => 601, 'msg' => "添加失败！流派已存在！"));
+        }
+        else{
+            $genres = new Genre();
+            $genres->name = $data['name'];
+            $genres->style = $data['style'];
+            $genres->save();
+            return response()->json(array('code' => 200, 'msg' => "添加成功！"));
+        }
+    }
 }

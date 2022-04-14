@@ -37,8 +37,8 @@
                             <a class="nav-item nav-link myRental" href="{{url('myrental')}}" >我的借阅</a>
                         @elseif(session('user')['is_librarian'] == 1)
                             <a class="nav-item nav-link" href="#" id="addBook" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</a>
-                            <a class="nav-item nav-link" href="{{url('genrelist')}}" id="genreList">流派列表</a>
-                            <a class="nav-item nav-link" href="#" data-bs-target="#genresManageModal" data-bs-toggle="modal">管理流派</a>
+                            <a class="nav-item nav-link" href="{{url('genre/list')}}" id="genreList">流派列表</a>
+                            <a class="nav-item nav-link" href="#" data-bs-target="#addGenresModal" data-bs-toggle="modal">添加流派</a>
                             <a class="nav-item nav-link" href="#" data-bs-target="#borrowManageModal" data-bs-toggle="modal">借阅管理</a>
                         @endif
                     @endif
@@ -151,6 +151,41 @@
     </div>
 </div>
 
+{{--    添加新流派成功之后的弹窗--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-success border-0" id="addGenresSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                添加新流派成功！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    添加新书失败之后的弹窗：流派号已存在--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-danger border-0" id="addGenresFailed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                添加新流派失败！流派已经存在！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    添加新流派失败之后的弹窗：表单验证不通过--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-danger border-0" id="addGenresFormValidationFailed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                添加新流派失败！请正确填写信息！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
 
     @yield("content")
 
@@ -366,6 +401,45 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary add-book-submit">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加新流派模态框 -->
+    <div class="modal fade" id="addGenresModal" tabindex="-1" aria-labelledby="addGenresModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">添加新流派</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="was-validated" onsubmit="return false;">
+                        <div class="form-group">
+                            <div class="form-group mb-3">
+                                <label for="a_genre_name" class="col-form-label">请输入流派名称：</label>
+                                <input type="text" id="a_genre_name" class="form-control" pattern=".{3,255}" required>
+                                <div class="invalid-feedback">3-255 characters</div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="a_genre_style" class="col-form-label">请选择流派风格：</label>
+                                <select class="form-select" id="a_genre_style" aria-label="a_genre_style" required>
+                                    <option value="1">primary</option>
+                                    <option value="2">secondary</option>
+                                    <option value="3">success</option>
+                                    <option value="4">danger</option>
+                                    <option value="5">warning</option>
+                                    <option value="6">info</option>
+                                    <option value="7">light</option>
+                                    <option value="8">dark</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary add-genres-submit">添加</button>
                 </div>
             </div>
         </div>
@@ -636,6 +710,39 @@
                     $("#addBookFormValidationFailed").toast("show");
                 }
             });
+
+            // Add new genre
+            $('.add-genres-submit').click(function () {
+                gname = $.trim($("#a_genre_name").val());
+                gstyle = $("#a_genre_style option:selected").text();
+                if(gname !== "" && gstyle !== "")
+                {
+                    if(3 <= gname.length <= 255)
+                    {
+                        $.post("{{url('genre/add')}}", {name: gname, style: gstyle}, function (res) {
+                            if(res.code === 200)
+                            {
+                                $("#addGenresSuccess").toast("show");
+                                setTimeout(function () {
+                                    window.location.href = '{{url('genre/list')}}';
+                                }, 2000);
+                            }
+                            else {
+                                $("#addGenresFailed").toast("show");
+                                setTimeout(function () {
+                                    window.location.reload();
+                                }, 2000);
+                            }
+                        })
+                    }
+                    else{
+                        $("#addGenresFormValidationFailed").toast("show");
+                    }
+                }
+                else{
+                    $("#addGenresFormValidationFailed").toast("show");
+                }
+            })
         })
     </script>
 

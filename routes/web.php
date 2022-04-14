@@ -48,3 +48,5 @@ Route::get('/myrental/detail/{id}',[RentalController::class,'rentalDetail']);
 Route::get('/addbook',[ManageController::class,'addBookPage']);
 Route::post('/addbook/add',[ManageController::class,'addBook']);
 Route::post('/photo',[ManageController::class,'photo']);
+
+Route::post('/editbook',[ManageController::class,'editBook']);

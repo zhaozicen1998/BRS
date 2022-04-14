@@ -604,7 +604,7 @@
                 now = new Date(now);
                 released = new Date(released_at);
 
-                if (title !== "" && author !== "" && released_at !== "" && pages !== "" && isbn !== "" && description !== "" && genre_id !== "" && in_stock !== "")
+                if (title !== "" && author !== "" && released_at !== "" && pages !== "" && isbn !== "" && genre_id !== "" && in_stock !== "")
                 {
                     if(title.length <= 255 && author.length <= 255 && now >= released && parseInt(pages) >= 1 && parseInt(in_stock) >= 0)
                     {

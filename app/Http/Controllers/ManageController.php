@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ManageController extends Controller
 {
+    // 添加新书
     public function addBook(Request $request)
     {
         $data = $request->input();
@@ -32,6 +33,7 @@ class ManageController extends Controller
         }
     }
 
+    // 添加新书界面
     public function addBookPage()
     {
 //        $genreNames = Genre::get()->pluck('name')->unique();
@@ -57,5 +59,34 @@ class ManageController extends Controller
 
         $imagePath = "/image/book".$src;
         return response()->json(['imagePath' => $imagePath]);
+    }
+
+    // 编辑书本
+    public function editBook(Request $request)
+    {
+        $data = $request->input();
+        $books = Book::find($data['id']);
+        $books->title = $data['title'];
+        $books->authors = $data['author'];
+        $books->released_at = $data['released_at'];
+        $books->pages = $data['pages'];
+        $books->isbn = $data['isbn'];
+        $books->in_stock = $data['in_stock'];
+        $books->description = $data['description'];
+        $books->language_code = $data['language_code'];
+        $books->genre_id = $data['genre_id'];
+        if($data['cover_image'] !== null)
+        {
+            $books->cover_image = $data['cover_image'];
+        }
+
+        if($books->save())
+        {
+            return response()->json(array('code' => 200, 'msg' => "修改成功！"));
+        }
+        else
+        {
+            return response()->json(array('code' => 601, 'msg' => "修改失败！"));
+        }
     }
 }

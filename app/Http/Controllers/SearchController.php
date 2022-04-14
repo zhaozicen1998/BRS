@@ -157,7 +157,8 @@ class SearchController extends Controller
     {
         $book = Book::find($id);
         // 模型的关联查询
-        $genre = $book->genres()->first();
+        $genre = $book->genres()->first();  //用于搜索详情页显示，指定书籍的genre信息
+        $genres = Genre::all(); //用于书籍编辑页面，select下的option填充
         $borrowed_book = $book->borrows();
         // orWhere查询放至闭包中防止前面的where查询失效
         $borrowed = $borrowed_book->where(function ($borrowed_book) {
@@ -167,6 +168,7 @@ class SearchController extends Controller
         return response()->json([
             'data' => $book,
             'genre' => $genre,
+            'genres' => $genres,
             'notborrowed' => $notborrowed
         ]);
     }

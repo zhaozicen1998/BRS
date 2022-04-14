@@ -50,3 +50,4 @@ Route::post('/addbook/add',[ManageController::class,'addBook']);
 Route::post('/photo',[ManageController::class,'photo']);
 
 Route::post('/editbook',[ManageController::class,'editBook']);
+Route::post('/deletebook',[ManageController::class,'deleteBook']);

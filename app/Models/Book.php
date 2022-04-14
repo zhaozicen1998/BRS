@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Book
@@ -43,6 +44,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Book extends Model
 {
+    use SoftDeletes;
+
     public function borrows()
     {
         return $this->hasMany(Borrow::class, 'book_id');
@@ -56,6 +59,15 @@ class Book extends Model
     public function activeBorrows()
     {
         return $this->getAllBorrows()->where('status', '=', 'ACCEPTED');
+    }
+
+    // 关联删除
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($book) {
+            $book->borrows()->delete();
+        });
     }
 
     // 修复时间戳输出格式

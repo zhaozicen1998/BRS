@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Borrow
@@ -40,6 +41,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Borrow extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'reader_id',
         'book_id',

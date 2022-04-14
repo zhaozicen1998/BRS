@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Genre
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Genre extends Model
 {
+    use SoftDeletes;
+
     public function books()
     {
         return $this->hasMany(Book::class, 'genre_id','id');

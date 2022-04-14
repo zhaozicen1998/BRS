@@ -89,4 +89,18 @@ class ManageController extends Controller
             return response()->json(array('code' => 601, 'msg' => "修改失败！"));
         }
     }
+
+    // 删除书本
+    public function deleteBook(Request $request)
+    {
+        $data = $request->input();
+        $books = Book::find($data['id']);
+        if($books->delete())
+        {
+            return response()->json(array('code' => 200, 'msg' => "删除成功！"));
+        }
+        else{
+            return response()->json(array('code' => 601, 'msg' => "删除失败！"));
+        }
+    }
 }

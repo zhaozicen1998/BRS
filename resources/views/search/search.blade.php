@@ -31,6 +31,7 @@
                                 <button class="btn btn-success btn-xs" id="bookdetails" data-bs-target="#bookDetailModal" data-bs-toggle="modal" data-id="{{$result['id']}}">详情</button>
                                 @if(session('user')['is_librarian'] == 1)
                                     <button class="btn btn-primary btn-xs" id="editbook" data-bs-target="#editBookModal" data-bs-toggle="modal" data-id="{{$result['id']}}">编辑</button>
+                                    <button class="btn btn-danger btn-xs" id="deletebook" data-bs-target="#deleteBookModal" data-bs-toggle="modal" data-id="{{$result['id']}}">删除</button>
                                 @endif
                             </td>
                         </tr>
@@ -61,6 +62,66 @@
         <div class="d-flex">
             <div class="toast-body">
                 <p id="borrowFailedMessage"></p>
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    编辑图书成功之后的弹窗--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-success border-0" id="editBookSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                修改书本信息成功！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--   编辑图书失败后的弹窗：ISBN号冲突--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-danger border-0" id="editBookFailed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                修改书本信息失败！ISBN号和数据库中已有的其他书冲突！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    编辑图书失败后的弹窗：表单验证不通过--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-danger border-0" id="editBookFormValidationFailed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                修改书本信息失败！请正确填写信息！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    删除图书成功之后的弹窗--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-success border-0" id="deleteBookSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                删除成功！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    删除图书失败后的弹窗--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-danger border-0" id="deleteBookFailed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                删除失败！
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
@@ -213,38 +274,22 @@
         </div>
     </div>
 
-    {{--    编辑图书成功之后的弹窗--}}
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-        <div class="toast align-items-center text-white bg-success border-0" id="editBookSuccess" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    修改书本信息成功！
+    <!-- 删除书本模态框 -->
+    <div class="modal fade" id="deleteBookModal" tabindex="-1" aria-labelledby="deleteBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">删除</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-
-    {{--   编辑图书失败后的弹窗：ISBN号冲突--}}
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-        <div class="toast align-items-center text-white bg-danger border-0" id="editBookFailed" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    修改书本信息失败！ISBN号和数据库中已有的其他书冲突！
+                <div class="modal-body">
+                    <p>您确定要删除本书吗？</p>
+                    <p id="del_title" style="color: red"></p>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-
-    {{--    编辑图书失败后的弹窗：表单验证不通过--}}
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-        <div class="toast align-items-center text-white bg-danger border-0" id="editBookFormValidationFailed" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    修改书本信息失败！请正确填写信息！
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button class="btn btn-danger delete-book-submit">删除</button>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
@@ -405,6 +450,35 @@
                 $("#editBookFormValidationFailed").toast("show");
             }
         });
+
+        // 删除书本 --- 在模态框中获取书名
+        $('body').on('click', '#deletebook', function (event) {
+            event.preventDefault();
+            id = $(this).data('id');
+            $.get('/search/' + 'detail/' + id, function (data) {
+                $('#del_title').text('本书书名是：' + data.data.title);
+            })
+        })
+
+        // 删除书本
+        $('.delete-book-submit').click(function () {
+            $.post('{{url('deletebook')}}', {id: id}, function (res) {
+                if(res.code === 200)
+                {
+                    $('#deleteBookSuccess').toast('show');
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }
+                else {
+                    $('#deleteBookFailed').toast('show');
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }
+            }, 'json');
+        });
+
     })
 </script>
 

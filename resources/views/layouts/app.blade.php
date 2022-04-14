@@ -36,7 +36,7 @@
                         @if(session('user')['is_librarian'] == 0)
                             <a class="nav-item nav-link myRental" href="{{url('myrental')}}" >我的借阅</a>
                         @elseif(session('user')['is_librarian'] == 1)
-                            <a class="nav-item nav-link" href="#" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</a>
+                            <a class="nav-item nav-link" href="#" id="addBook" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</a>
                             <a class="nav-item nav-link" href="#" data-bs-target="#genresManageModal" data-bs-toggle="modal">管理流派</a>
                             <a class="nav-item nav-link" href="#" data-bs-target="#borrowManageModal" data-bs-toggle="modal">借阅管理</a>
                         @endif
@@ -113,6 +113,42 @@
             </div>
         </div>
     </div>
+
+{{--    添加新书成功之后的弹窗--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-success border-0" id="addBookSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                添加新书成功！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    添加新书失败之后的弹窗：ISBN号已存在--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-danger border-0" id="addBookFailed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                添加新书失败！ISBN号已经存在！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+{{--    添加新书失败之后的弹窗：表单验证不通过--}}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div class="toast align-items-center text-white bg-danger border-0" id="addBookFormValidationFailed" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                添加新书失败！请正确填写信息！
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
 
 
     @yield("content")
@@ -255,6 +291,80 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary register-submit" disabled>注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加新书模态框 -->
+    <div class="modal fade" id="addBooksModal" tabindex="-1" aria-labelledby="addBooksModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">添加新书</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="was-validated" onsubmit="return false;">
+                        <div class="row form-group">
+                            <div class="form-group mb-3 col-sm-12">
+                                <label for="a_title" class="col-form-label">标题：</label>
+                                <input type="text" id="a_title" class="form-control" pattern=".{1,255}" required>
+                                <div class="invalid-feedback">max. 255 characters</div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                <label for="a_author" class="col-form-label">作者：</label>
+                                <input type="text" id="a_author" class="form-control" pattern=".{1,255}" required>
+                                <div class="invalid-feedback">max. 255 characters</div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                <label for="a_released_at" class="col-form-label">发行于：</label>
+                                <input type="date" id="a_released_at" class="form-control" max="" required>
+                                <div class="invalid-feedback">must before now</div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-2">
+                                <label for="a_pages" class="col-form-label">页数：</label>
+                                <input type="number" id="a_pages" class="form-control" min="1" required>
+                                <div class="invalid-feedback">at least 1</div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-4">
+                                <label for="a_isbn" class="col-form-label">ISBN：</label>
+                                <input type="text" id="a_isbn" class="form-control" pattern="^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$" required>
+                                <div class="invalid-feedback">isbn wrong</div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                <label for="a_in_stock" class="col-form-label">Number of this book in the library：</label>
+                                <input type="number" id="a_in_stock" class="form-control" min="0" required>
+                                <div class="invalid-feedback">At least 0</div>
+                            </div>
+                            <div class="form-group mb-3 col-sm-10">
+                                <label for="a_description" class="col-form-label">描述：</label>
+                                <textarea id="a_description" class="form-control" rows="1" style="height: 35px;"></textarea>
+                            </div>
+                            <div class="form-group mb-3 col-sm-2">
+                                <label for="a_language_code" class="col-form-label">语言：</label>
+                                <input type="text" id="a_language_code" class="form-control">
+                            </div>
+{{--                            <div class="form-group mb-3 col-sm-6">--}}
+{{--                                <label for="a_genre" class="col-form-label">类型：</label>--}}
+{{--                                <select class="form-select" id="a_genre_name" aria-label="a_genre_name"></select>--}}
+{{--                                <select class="form-select" id="a_genre_style" aria-label="a_genre_style" required></select>--}}
+{{--                            </div>--}}
+                            <div class="form-group mb-3 col-sm-6">
+                                <label for="a_genre" class="col-form-label">类型：</label>
+                                <select class="form-select" id="a_genre" aria-label="a_genre" required></select>
+                            </div>
+                            <div class="form-group mb-3 col-sm-6">
+                                <label for="a_cover_image" class="col-form-label">书籍封面：</label>
+                                <input name="filesToUpload" type="file" id="a_cover_image" class="form-control" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg">
+                                <p id="uploadSuccess" style="color: green" >图片上传成功！</p>
+                                <p id="uploadFailed" style="color: red" >图片上传失败！</p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary add-book-submit">添加</button>
                 </div>
             </div>
         </div>
@@ -430,6 +540,100 @@
                         }, 1000);
                     }
                 });
+            });
+
+            // Add new book
+            $('#addBook').click(function (event) {
+                event.preventDefault();
+                $('#uploadSuccess').hide();
+                $('#uploadFailed').hide();
+                // 日期不大于当前日期的判断
+                let now = new Date();
+                let year = now.getFullYear();
+                let month = now.getMonth()+1 < 10 ? "0"+(now.getMonth()+1) : (now.getMonth()+1);
+                let date = now.getDate() < 10 ? "0"+now.getDate() : now.getDate();
+                $('#a_released_at').attr('max', year+"-"+month+"-"+date);
+
+                $.get('/addbook', function (data) {
+                    // 遍历获得的数据，添加至下拉菜单
+                    $.each(data.genres, function (index, genres) {
+                        let option = "<option value='" + genres.id + "'>" + genres.name + " - " + genres.style +"</option>";
+                        $("#a_genre").append(option);
+                    })
+                    // $.each(data.genreStyles, function (index, genreStyles) {
+                    //     let option = "<option value='" + genreStyles + "'>" + genreStyles + "</option>";
+                    //     $("#a_genre_style").append(option);
+                    // })
+                })
+            })
+
+            let cover_image = "";
+            $('#a_cover_image').change(function () {
+                var formData = new FormData();
+                formData.append('photo', $('#a_cover_image')[0].files[0]);
+                $.ajax({
+                    url: "{{url('photo')}}",
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        $('#uploadSuccess').show();
+                        cover_image = res.imagePath;
+                    },
+                    error: function (res) {
+                        $('#uploadFailed').show();
+                    }
+                });
+            })
+
+            $('.add-book-submit').click(function () {
+                title = $.trim($("#a_title").val());
+                author = $.trim($("#a_author").val());
+                released_at = $.trim($("#a_released_at").val());
+                pages = $.trim($("#a_pages").val());
+                isbn = $.trim($("#a_isbn").val());
+                reg = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/i;
+                description = $.trim($("#a_description").val());
+                language_code = $.trim($("#a_language_code").val());
+                genre_id = $("#a_genre option:selected").attr('value');
+                in_stock = $.trim($("#a_in_stock").val());
+
+                let now = new Date();
+                now = now.toLocaleDateString().replace('/','-').replace('/','-');
+                now = new Date(now);
+                released = new Date(released_at);
+
+                if (title !== "" && author !== "" && released_at !== "" && pages !== "" && isbn !== "" && description !== "" && genre_id !== "" && in_stock !== "")
+                {
+                    if(title.length <= 255 && author.length <= 255 && now >= released && parseInt(pages) >= 1 && parseInt(in_stock) >= 0)
+                    {
+                        if(reg.test(isbn))
+                        {
+                            $.post("{{url('addbook/add')}}", {title: title, author: author, released_at: released_at, pages: pages, isbn: isbn, description: description, language_code: language_code, genre_id: genre_id, in_stock: in_stock, cover_image: cover_image}, function (res) {
+                                if(res.code === 200)
+                                {
+                                    $("#addBookSuccess").toast("show");
+                                    setTimeout(function () {
+                                        window.location.reload();
+                                    }, 2000);
+                                }
+                                else {
+                                    $("#addBookFailed").toast("show");
+                                }
+                            }, 'json');
+                        }
+                        else{
+                            $("#addBookFormValidationFailed").toast("show");
+                        }
+                    }
+                    else{
+                        $("#addBookFormValidationFailed").toast("show");
+                    }
+                }
+                else{
+                    $("#addBookFormValidationFailed").toast("show");
+                }
             });
         })
     </script>

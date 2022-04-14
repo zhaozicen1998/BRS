@@ -56,6 +56,13 @@ return [
             'throw' => false,
         ],
 
+        'Uploads' => [
+            'driver' => 'local',
+            'root' => public_path('/image/book'), // public_path 就是public的路径
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+        ],
+
     ],
 
     /*

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ManageController;
 use App\Http\Controllers\RentalController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
@@ -43,3 +44,7 @@ Route::get('/myrental/rejected',[RentalController::class,'myrental']);
 Route::get('/myrental/returned',[RentalController::class,'myrental']);
 
 Route::get('/myrental/detail/{id}',[RentalController::class,'rentalDetail']);
+
+Route::get('/addbook',[ManageController::class,'addBookPage']);
+Route::post('/addbook/add',[ManageController::class,'addBook']);
+Route::post('/photo',[ManageController::class,'photo']);

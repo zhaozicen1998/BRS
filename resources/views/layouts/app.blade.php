@@ -37,6 +37,7 @@
                             <a class="nav-item nav-link myRental" href="{{url('myrental')}}" >我的借阅</a>
                         @elseif(session('user')['is_librarian'] == 1)
                             <a class="nav-item nav-link" href="#" id="addBook" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</a>
+                            <a class="nav-item nav-link" href="{{url('genrelist')}}" id="genreList">流派列表</a>
                             <a class="nav-item nav-link" href="#" data-bs-target="#genresManageModal" data-bs-toggle="modal">管理流派</a>
                             <a class="nav-item nav-link" href="#" data-bs-target="#borrowManageModal" data-bs-toggle="modal">借阅管理</a>
                         @endif

@@ -51,3 +51,5 @@ Route::post('/photo',[ManageController::class,'photo']);
 
 Route::post('/editbook',[ManageController::class,'editBook']);
 Route::post('/deletebook',[ManageController::class,'deleteBook']);
+
+Route::get('/genrelist',[ManageController::class,'genreList']);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 
 class ManageController extends Controller
@@ -102,5 +103,16 @@ class ManageController extends Controller
         else{
             return response()->json(array('code' => 601, 'msg' => "删除失败！"));
         }
+    }
+
+    // 流派列表
+    public function genreList(Request $request)
+    {
+        Paginator::defaultView('vendor.pagination.bootstrap-5');
+        $results = Genre::query()->orderBy("id")->paginate(5)->withQueryString();
+        $data = [
+            'results' => $results
+        ];
+        return view('genre.genre',$data);
     }
 }

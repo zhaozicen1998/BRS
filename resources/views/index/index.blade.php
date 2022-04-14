@@ -84,7 +84,7 @@
                             <img src="{{asset('image/tab-5.png')}}" alt="tab-5">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#genresManageModal" data-toggle="modal">管理流派</button>
+                            <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#genresManageModal" data-toggle="modal">流派列表</button>
                             <p class="mb-2">管理系统中所有的流派</p>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Genre;
+use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
@@ -131,6 +132,40 @@ class ManageController extends Controller
             $genres->style = $data['style'];
             $genres->save();
             return response()->json(array('code' => 200, 'msg' => "添加成功！"));
+        }
+    }
+
+    // 编辑流派页面
+    public function editGenrePage(Request $request)
+    {
+        $data = $request->input();
+        $genres = Genre::where('id',$data['id'])->first();
+        return response()->json([
+            'data' => $genres
+        ]);
+    }
+
+    // 编辑流派
+    public function editGenre(Request $request)
+    {
+        $data = $request->input();
+        $exist = Genre::where('name',$data['name'])->where('style',$data['style'])->first();
+        if($exist != null)
+        {
+            return response()->json(array('code' => 601, 'msg' => "编辑失败！流派已存在！"));
+        }
+        else{
+            $genres = Genre::find($data['id']);
+            $genres->name = $data['name'];
+            $genres->style = $data['style'];
+            if($genres->save())
+            {
+                return response()->json(array('code' => 200, 'msg' => "修改成功！"));
+            }
+            else
+            {
+                return response()->json(array('code' => 601, 'msg' => "修改失败！"));
+            }
         }
     }
 }

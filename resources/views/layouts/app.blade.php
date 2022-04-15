@@ -717,7 +717,7 @@
                 gstyle = $("#a_genre_style option:selected").text();
                 if(gname !== "" && gstyle !== "")
                 {
-                    if(3 <= gname.length <= 255)
+                    if(gname.length >= 3 && gname.length <= 255)
                     {
                         $.post("{{url('genre/add')}}", {name: gname, style: gstyle}, function (res) {
                             if(res.code === 200)

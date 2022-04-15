@@ -39,7 +39,7 @@
                             <a class="nav-item nav-link" href="#" id="addBook" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</a>
                             <a class="nav-item nav-link" href="{{url('genre/list')}}" id="genreList">流派列表</a>
                             <a class="nav-item nav-link" href="#" data-bs-target="#addGenresModal" data-bs-toggle="modal">添加流派</a>
-                            <a class="nav-item nav-link" href="#" data-bs-target="#borrowManageModal" data-bs-toggle="modal">借阅管理</a>
+                            <a class="nav-item nav-link rentalManage" href="{{url('rental')}}">借阅管理</a>
                         @endif
                     @endif
                 </div>
@@ -480,7 +480,7 @@
 
             // MyRental
             $('.myRental').click(function () {
-                $.get('{{url('rental')}}')
+                $.get('{{url('myrental')}}')
             })
 
             // Login
@@ -736,6 +736,7 @@
                     $("#addGenresFormValidationFailed").toast("show");
                 }
             })
+
         })
     </script>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Borrow;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -91,8 +92,10 @@ class RentalController extends Controller
     public function rentalDetail($id)
     {
         $borrow = Borrow::find($id);
+        $users = Borrow::find($id)->borrowedReader()->first();
         return response()->json([
-            'data' => $borrow
+            'data' => $borrow,
+            'user' => $users
         ]);
     }
 }

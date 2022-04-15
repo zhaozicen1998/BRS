@@ -58,3 +58,14 @@ Route::get('/genre/edit',[ManageController::class,'editGenrePage']);
 Route::post('/genre/edit/edit',[ManageController::class,'editGenre']);
 Route::post('/genre/del',[ManageController::class,'deleteGenre']);
 
+Route::get('rental',[ManageController::class,'rental']);
+Route::get('/rental/pending',[ManageController::class,'rental']);
+Route::get('/rental/accepted',[ManageController::class,'rental']);
+Route::get('/rental/late',[ManageController::class,'rental']);
+Route::get('/rental/rejected',[ManageController::class,'rental']);
+Route::get('/rental/returned',[ManageController::class,'rental']);
+
+// 这个路由用于查询模态框需要的值
+Route::get('/rental/find',[ManageController::class,'rentalFind']);
+
+Route::post('/rental/pending/toaccept',[ManageController::class,'toAccept']);

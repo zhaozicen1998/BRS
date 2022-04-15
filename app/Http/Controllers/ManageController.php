@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PaginationHelper;
 use App\Models\Book;
+use App\Models\Borrow;
 use App\Models\Genre;
+use App\Models\User;
+use Carbon\Carbon;
 use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
 
@@ -180,6 +186,87 @@ class ManageController extends Controller
         }
         else{
             return response()->json(array('code' => 601, 'msg' => "删除失败！"));
+        }
+    }
+
+    // 借阅管理列表
+    public function rental(Request $request)
+    {
+        Paginator::defaultView('vendor.pagination.bootstrap-5');
+        $status = str_replace('rental','',$request->path());
+        $status = strtoupper(str_replace('/','',$status));
+        if($status === '')
+        {
+            $rentals = Borrow::where('status','PENDING')->get();
+            $results = Borrow::where('status','PENDING')->orderBy("id")->paginate(5)->withQueryString();
+        }
+        else if($status === 'PENDING'  || $status === 'REJECTED' || $status === 'RETURNED')
+        {
+            $rentals = Borrow::where('status',$status)->get();
+            $results = Borrow::where('status',$status)->orderBy("id")->paginate(5)->withQueryString();
+        }
+        else
+        {
+            $now = Carbon::now('GMT+2')->toDateTimeString();
+            if($status === 'LATE')
+            {
+                $rentals = Borrow::where('status','ACCEPTED')->where('deadline','<',$now)->get();
+                $results = Borrow::where('status','ACCEPTED')->where('deadline','<',$now)->orderBy("id")->paginate(5)->withQueryString();
+            }
+            else
+            {
+                $rentals = Borrow::where('status','ACCEPTED')->where('deadline','>=',$now)->get();
+                $results = Borrow::where('status','ACCEPTED')->where('deadline','>=',$now)->orderBy("id")->paginate(5)->withQueryString();
+            }
+        }
+        $books = new Collection();
+        $users = new Collection();
+        foreach ($rentals as $rental)
+        {
+            $bookname = $rental->books()->pluck('title')->first();
+            $books = $books->push(Book::where('title',$bookname));
+            $username = $rental->borrowedReader()->pluck('name')->first();
+            $users = $users->push(User::where('name',$username));
+        }
+        $books = PaginationHelper::paginate($books, 5);
+        $users = PaginationHelper::paginate($users, 5);
+        $books = $books->withQueryString();
+        $users = $users->withQueryString();
+        $data = [
+            'results' => $results,
+            'books' => $books,
+            'users' => $users
+        ];
+        return view('librarian.rental',$data);
+    }
+
+    // 给借阅接受、拒绝、还书等的模态框（确认框）传值
+    public function rentalFind(Request $request)
+    {
+        $data = $request->input();
+        $books = Borrow::find($data['id'])->books()->first();
+        $users = Borrow::find($data['id'])->borrowedReader()->first();
+        return response()->json([
+            'book' => $books,
+            'user' => $users
+        ]);
+    }
+
+    // pending -> accepted
+    public function toAccept(Request $request)
+    {
+        $data = $request->input();
+        $borrows = Borrow::find($data['id']);
+        $borrows->status = "ACCEPTED";
+        $borrows->request_processed_at = $data['request_processed_at'];
+        $borrows->request_managed_by = session('user')['id'];
+        if($borrows->save())
+        {
+            return response()->json(array('code' => 200, 'msg' => "借阅接受成功！"));
+        }
+        else
+        {
+            return response()->json(array('code' => 601, 'msg' => "借阅接受失败！"));
         }
     }
 }

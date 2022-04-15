@@ -5,11 +5,11 @@
 {{--    欢迎框--}}
     <div class="container mb-4">
         @if(empty(session('user')))
-            <h2 class="index-h2">「欢迎您，游客！」</h2>
-            <p class="index-h2-p mb-5 mt-3">点击注册按钮，成为我们的会员！已有账号请登录！</p>
+            <h2 class="index-h2">「Welcome, visitor!」</h2>
+            <p class="index-h2-p mb-5 mt-3">Click the Register button to become our member! Please login if you already have an account!</p>
         @else
-            <h2 class="index-h2">「欢迎您，{{session('user')['username']}}！」</h2>
-            <p class="index-h2-p mb-5 mt-3">您可以点击下列按钮使用功能，也可以点击导航栏上的按钮</p>
+            <h2 class="index-h2">「Welcome, {{session('user')['username']}}！」</h2>
+            <p class="index-h2-p mb-5 mt-3">You can use the functions by clicking the following buttons. You can also click the buttons on the navigation bar</p>
         @endif
 
 {{--     功能框--}}
@@ -21,8 +21,8 @@
                         <img src="{{asset('image/tab-1.png')}}" alt="tab-1">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#searchModal" data-bs-toggle="modal">搜索书籍</button>
-                        <p class="mb-2">通过书名，作者名进行搜索</p>
+                        <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#searchModal" data-bs-toggle="modal">Search books</button>
+                        <p class="mb-2">Search book by title or author's name</p>
                     </div>
                 </div>
             </div>
@@ -33,8 +33,8 @@
                         <img src="{{asset('image/tab-2.png')}}" alt="tab-2">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#genresModal" data-bs-toggle="modal">按类索引</button>
-                        <p class="mb-2">依分类展示本馆所有书籍</p>
+                        <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#genresModal" data-bs-toggle="modal">List by genre</button>
+                        <p class="mb-2">Display all our books by genre</p>
                     </div>
                 </div>
             </div>
@@ -46,8 +46,8 @@
                             <img src="{{asset('image/tab-3.png')}}" alt="tab-3">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3">更多功能</button>
-                            <p class="mb-2">请登录后查看~</p>
+                            <button class="btn btn-outline-dark my-2 my-sm-3">More features</button>
+                            <p class="mb-2">Please login to view~</p>
                         </div>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
                             <img src="{{asset('image/tab-3.png')}}" alt="tab-3">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('myrental')}}">我的借阅</a>
-                            <p class="mb-2">管理我的借阅详细信息</p>
+                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('myrental')}}">My rentals</a>
+                            <p class="mb-2">Manage my rental details</p>
                         </div>
                     </div>
                 </div>
@@ -72,8 +72,8 @@
                             <img src="{{asset('image/tab-4.png')}}" alt="tab-4">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</button>
-                            <p class="mb-2">向系统中添加新的书</p>
+                            <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#addBooksModal" data-bs-toggle="modal">Add new book</button>
+                            <p class="mb-2">Add new books to the system</p>
                         </div>
                     </div>
                 </div>
@@ -84,8 +84,8 @@
                             <img src="{{asset('image/tab-5.png')}}" alt="tab-5">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('genre/list')}}">流派列表</a>
-                            <p class="mb-2">管理系统中所有的流派</p>
+                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('genre/list')}}">Genre list</a>
+                            <p class="mb-2">Manage all genres in the system</p>
                         </div>
                     </div>
                 </div>
@@ -96,8 +96,8 @@
                             <img src="{{asset('image/tab-6.png')}}" alt="tab-5">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#addGenresModal" data-bs-toggle="modal">添加流派</button>
-                            <p class="mb-2">向系统中添加新的流派</p>
+                            <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#addGenresModal" data-bs-toggle="modal">Add new genre</button>
+                            <p class="mb-2">Add new genres to the system</p>
                         </div>
                     </div>
                 </div>
@@ -108,8 +108,8 @@
                             <img src="{{asset('image/tab-3.png')}}" alt="tab-3">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('rental')}}">借阅管理</a>
-                            <p class="mb-2">管理系统中所有的借阅</p>
+                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('rental')}}">Rental list</a>
+                            <p class="mb-2">Manage all rental information in the system</p>
                         </div>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
 
     {{--    页脚--}}
     <footer class="footer bg-dark p-5 text-light text-center">
-        <p class="m-1">现有用户数量：{{$usersCount}}，现有书籍数量：{{$booksCount}}，现有的体裁数量：{{$genresCount}}</p>
-        <p class="m-1">活跃的图书租赁数量：{{$acceptCount}}</p>
+        <p class="m-1">Number of users in the system: {{$usersCount}}，Number of books: {{$booksCount}}，Number of genres: {{$genresCount}}</p>
+        <p class="m-1">Number of active book rentals: {{$acceptCount}}</p>
     </footer>
 @endsection

@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
-    <title>图书管理系统</title>
+    <title>BRS</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -26,30 +26,30 @@
             <div class="collapse navbar-collapse mt-2" id="navbarSupportedContent">
                 <a href="{{url('/')}}" class="navbar-brand">
                     <img src="{{ asset('image/logo.svg') }}" width="30" height="30" class="d-inline-block align-text-top" alt="">
-                    图书管理系统
+                    BRS
                 </a>
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="{{url('/')}}"><span class="glyphicon glyphicon-home"></span>首页</a>
-                    <a class="nav-item nav-link" href="#" data-bs-target="#searchModal" data-bs-toggle="modal">搜索</a>
-                    <a class="nav-item nav-link" href="#" data-bs-target="#genresModal" data-bs-toggle="modal">按类索引</a>
+                    <a class="nav-item nav-link active" href="{{url('/')}}"><span class="glyphicon glyphicon-home"></span>Home</a>
+                    <a class="nav-item nav-link" href="#" data-bs-target="#searchModal" data-bs-toggle="modal">Search</a>
+                    <a class="nav-item nav-link" href="#" data-bs-target="#genresModal" data-bs-toggle="modal">List by genre</a>
                     @if(!empty(session('user')))
                         @if(session('user')['is_librarian'] == 0)
-                            <a class="nav-item nav-link myRental" href="{{url('myrental')}}" >我的借阅</a>
+                            <a class="nav-item nav-link myRental" href="{{url('myrental')}}" >My rentals</a>
                         @elseif(session('user')['is_librarian'] == 1)
-                            <a class="nav-item nav-link" href="#" id="addBook" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</a>
-                            <a class="nav-item nav-link" href="{{url('genre/list')}}" id="genreList">流派列表</a>
-                            <a class="nav-item nav-link" href="#" data-bs-target="#addGenresModal" data-bs-toggle="modal">添加流派</a>
-                            <a class="nav-item nav-link rentalManage" href="{{url('rental')}}">借阅管理</a>
+                            <a class="nav-item nav-link" href="#" id="addBook" data-bs-target="#addBooksModal" data-bs-toggle="modal">Add new book</a>
+                            <a class="nav-item nav-link" href="{{url('genre/list')}}" id="genreList">Genre list</a>
+                            <a class="nav-item nav-link" href="#" data-bs-target="#addGenresModal" data-bs-toggle="modal">Add new genre</a>
+                            <a class="nav-item nav-link rentalManage" href="{{url('rental')}}">Rental list</a>
                         @endif
                     @endif
                 </div>
             </div>
             @if(empty(session('user')))
-                <button class="btn btn-outline-light my-2 my-sm-0" style="margin-left: 10px" data-bs-target="#registerModal" data-bs-toggle="modal">注册</button>
-                <button class="btn btn-outline-light my-2 my-sm-0" style="margin-left: 10px" data-bs-target="#loginModal" data-bs-toggle="modal">登陆</button>
+                <button class="btn btn-outline-light my-2 my-sm-0" style="margin-left: 10px" data-bs-target="#registerModal" data-bs-toggle="modal">Register</button>
+                <button class="btn btn-outline-light my-2 my-sm-0" style="margin-left: 10px" data-bs-target="#loginModal" data-bs-toggle="modal">Login</button>
             @else
                 <a class="nav-item nav-link active" href="#" style="color: whitesmoke">{{session('user')['username']}}</a>
-                <button class="btn btn-outline-light log-out my-2 my-sm-0" style="margin-left: 10px">退出登陆</button>
+                <button class="btn btn-outline-light log-out my-2 my-sm-0" style="margin-left: 10px">Logout</button>
             @endif
 
         </div>

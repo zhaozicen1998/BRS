@@ -247,6 +247,27 @@
         </div>
     </div>
 
+    <!-- 还书模态框 -->
+    <div class="modal fade" id="returnBookModal" tabindex="-1" aria-labelledby="returnBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">还书</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>确认该书已归还吗？</p>
+                    <p id="rt_username" style="color: red"></p>
+                    <p id="rt_bookname" style="color: red"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button class="btn btn-success return-book-submit">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- pending->accepted success -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-success border-0" id="pendingToAcceptedSuccess" role="alert" aria-live="assertive" aria-atomic="true">
@@ -301,6 +322,30 @@
             <div class="d-flex">
                 <div class="toast-body">
                     借阅拒绝失败！
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- accepted->returned success -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div class="toast align-items-center text-white bg-success border-0" id="acceptedToReturnedSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    还书成功！
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- accepted->returned failed -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div class="toast align-items-center text-white bg-danger border-0" id="acceptedToReturnedFailed" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    还书失败！
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -478,6 +523,36 @@
                     }
                     else {
                         $('#pendingToRejectedFailed').toast('show');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                }, 'json');
+            });
+
+            // 还书模态框需要的值
+            $('body').on('click', '#returnbook', function (event) {
+                event.preventDefault();
+                rentid = $(this).data('id');
+                $.get('/rental/' + 'find/', {id: rentid}, function (data) {
+                    $('#rt_username').text('用户名：' + data.user.name);
+                    $('#rt_bookname').text('书名：' + data.book.title);
+                })
+            })
+
+            // 还书
+            $('.return-book-submit').click(function () {
+
+                $.post('{{url('rental/returnbook')}}', {id: rentid}, function (res) {
+                    if(res.code === 200)
+                    {
+                        $('#acceptedToReturnedSuccess').toast('show');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                    else {
+                        $('#acceptedToReturnedFailed').toast('show');
                         setTimeout(function () {
                             window.location.reload();
                         }, 2000);

@@ -289,4 +289,22 @@ class ManageController extends Controller
         }
     }
 
+    // 还书
+    public function returnBook(Request $request)
+    {
+        $data = $request->input();
+        $borrows = Borrow::find($data['id']);
+        $borrows->status = "RETURNED";
+        $borrows->returned_at = date('Y-m-d H:i:s', time());
+        $borrows->return_managed_by = session('user')['id'];
+        if($borrows->save())
+        {
+            return response()->json(array('code' => 200, 'msg' => "还书成功！"));
+        }
+        else
+        {
+            return response()->json(array('code' => 601, 'msg' => "还书失败！"));
+        }
+    }
+
 }

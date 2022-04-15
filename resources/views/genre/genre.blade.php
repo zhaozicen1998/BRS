@@ -76,6 +76,27 @@
         </div>
     </div>
 
+    <!-- 删除流派模态框 -->
+    <div class="modal fade" id="deleteGenreModal" tabindex="-1" aria-labelledby="deleteGenreModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">删除</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>您确定要删除本流派吗？</p>
+                    <p id="del_name" style="color: red"></p>
+                    <p id="del_style" style="color: red"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button class="btn btn-danger delete-genre-submit">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{--    编辑流派成功后的弹窗--}}
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-success border-0" id="editGenreSuccess" role="alert" aria-live="assertive" aria-atomic="true">
@@ -106,6 +127,30 @@
             <div class="d-flex">
                 <div class="toast-body">
                     编辑失败！该流派已存在！
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    {{--    删除流派成功后的弹窗--}}
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div class="toast align-items-center text-white bg-success border-0" id="deleteGenreSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    删除流派成功！
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    {{--    删除流派失败后的弹窗--}}
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div class="toast align-items-center text-white bg-danger border-0" id="deleteGenreFailed" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    删除流派失败！
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -155,6 +200,35 @@
                 $("#editGenreFormValidationFailed").toast("show");
             }
         })
+
+        // 删除流派 --- 在模态框中获取流派名称，风格
+        $('body').on('click', '#deletegenre', function (event) {
+            event.preventDefault();
+            id = $(this).data('id');
+            $.get('/genre/' + 'edit/', {id: id}, function (data) {
+                $('#del_name').text('流派名称是：' + data.data.name);
+                $('#del_style').text('流派风格是：' + data.data.style);
+            })
+        })
+
+        // 删除流派
+        $('.delete-genre-submit').click(function () {
+            $.post('{{url('genre/del')}}', {id: id}, function (res) {
+                if(res.code === 200)
+                {
+                    $('#deleteGenreSuccess').toast('show');
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }
+                else {
+                    $('#deleteGenreFailed').toast('show');
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }
+            }, 'json');
+        });
     })
 
 

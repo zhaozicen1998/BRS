@@ -168,4 +168,18 @@ class ManageController extends Controller
             }
         }
     }
+
+    // 删除流派
+    public function deleteGenre(Request $request)
+    {
+        $data = $request->input();
+        $genres = Genre::find($data['id']);
+        if($genres->delete())
+        {
+            return response()->json(array('code' => 200, 'msg' => "删除成功！"));
+        }
+        else{
+            return response()->json(array('code' => 601, 'msg' => "删除失败！"));
+        }
+    }
 }

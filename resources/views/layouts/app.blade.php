@@ -604,16 +604,9 @@
             $('.log-out').click(function () {
                 $.getJSON("{{url('logout')}}", {}, function (res) {
                     $("#logoutSuccess").toast("show");
-                    if((window.location.href).indexOf('myrental') >= 0) {
-                        setTimeout(function () {
-                            window.open('{{url('/')}}');
-                        }, 1000);
-                    }
-                    else{
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 1000);
-                    }
+                    setTimeout(function () {
+                        window.location.href = '{{url('/')}}';
+                    }, 1000);
                 });
             });
 

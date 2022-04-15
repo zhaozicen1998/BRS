@@ -34,6 +34,17 @@ class Genre extends Model
         return $this->hasMany(Book::class, 'genre_id','id');
     }
 
+    // 关联删除
+    public static function boot()
+    {
+        parent::boot();
+        static::deleting(function($genre) {
+            $genre->books()->each(function($book) {
+                $book->delete();
+            });
+        });
+    }
+
     // 修复时间戳输出格式
     protected function serializeDate($date)
     {

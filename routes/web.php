@@ -54,6 +54,7 @@ Route::post('/deletebook',[ManageController::class,'deleteBook']);
 
 Route::get('/genre/list',[ManageController::class,'genreList']);
 Route::post('/genre/add',[ManageController::class,'addGenre']);
-Route::get('genre/edit',[ManageController::class,'editGenrePage']);
-Route::post('genre/edit/edit',[ManageController::class,'editGenre']);
+Route::get('/genre/edit',[ManageController::class,'editGenrePage']);
+Route::post('/genre/edit/edit',[ManageController::class,'editGenre']);
+Route::post('/genre/del',[ManageController::class,'deleteGenre']);
 

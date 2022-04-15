@@ -66,7 +66,9 @@ class Book extends Model
     {
         parent::boot();
         static::deleting(function($book) {
-            $book->borrows()->delete();
+            $book->borrows()->each(function($borrow) {
+                $borrow->delete();
+            });
         });
     }
 

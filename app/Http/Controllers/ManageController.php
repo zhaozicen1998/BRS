@@ -258,8 +258,9 @@ class ManageController extends Controller
         $data = $request->input();
         $borrows = Borrow::find($data['id']);
         $borrows->status = "ACCEPTED";
-        $borrows->request_processed_at = $data['request_processed_at'];
+        $borrows->request_processed_at = date('Y-m-d H:i:s', time());
         $borrows->request_managed_by = session('user')['id'];
+        $borrows->deadline = $data['deadline'];
         if($borrows->save())
         {
             return response()->json(array('code' => 200, 'msg' => "借阅接受成功！"));
@@ -269,4 +270,23 @@ class ManageController extends Controller
             return response()->json(array('code' => 601, 'msg' => "借阅接受失败！"));
         }
     }
+
+    // pending -> rejected
+    public function toReject(Request $request)
+    {
+        $data = $request->input();
+        $borrows = Borrow::find($data['id']);
+        $borrows->status = "REJECTED";
+        $borrows->request_processed_at = date('Y-m-d H:i:s', time());
+        $borrows->request_managed_by = session('user')['id'];
+        if($borrows->save())
+        {
+            return response()->json(array('code' => 200, 'msg' => "借阅拒绝成功！"));
+        }
+        else
+        {
+            return response()->json(array('code' => 601, 'msg' => "借阅拒绝失败！"));
+        }
+    }
+
 }

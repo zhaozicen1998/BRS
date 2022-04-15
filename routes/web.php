@@ -69,3 +69,4 @@ Route::get('/rental/returned',[ManageController::class,'rental']);
 Route::get('/rental/find',[ManageController::class,'rentalFind']);
 
 Route::post('/rental/pending/toaccept',[ManageController::class,'toAccept']);
+Route::post('/rental/pending/toreject',[ManageController::class,'toReject']);

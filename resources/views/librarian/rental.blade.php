@@ -50,9 +50,12 @@
                                     <td class="text-center">
                                         <button class="btn btn-primary btn-xs" id="bookdetails" data-bs-target="#bookDetailModal" data-bs-toggle="modal" data-id="{{$books[$x]->get()->pluck('id')->first()}}">书本详情</button>
                                         <button class="btn btn-warning btn-xs" id="rentaldetails" data-bs-target="#rentalDetailModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">借阅详情</button>
-                                        <button class="btn btn-success btn-xs" id="acceptrental" data-bs-target="#acceptRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}} ">接受</button>
-                                        <button class="btn btn-danger btn-xs" id="rejectrental" data-bs-target="#rejectRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">拒绝</button>
-                                        <button class="btn btn-success btn-xs" id="returnbook" data-bs-target="#returnBookModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">还书</button>
+                                        @if($results[$x]['status'] === "PENDING")
+                                            <button class="btn btn-success btn-xs" id="acceptrental" data-bs-target="#acceptRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}} ">接受</button>
+                                            <button class="btn btn-danger btn-xs" id="rejectrental" data-bs-target="#rejectRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">拒绝</button>
+                                        @elseif($results[$x]['status'] === "ACCEPTED")
+                                            <button class="btn btn-success btn-xs" id="returnbook" data-bs-target="#returnBookModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">还书</button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endfor
@@ -223,6 +226,27 @@
         </div>
     </div>
 
+    <!-- 拒绝借阅申请模态框 -->
+    <div class="modal fade" id="rejectRentalModal" tabindex="-1" aria-labelledby="rejectRentalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">拒绝</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>您确定要拒绝此借阅请求吗？</p>
+                    <p id="rj_username" style="color: red"></p>
+                    <p id="rj_bookname" style="color: red"></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button class="btn btn-danger reject-rental-submit">拒绝</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- pending->accepted success -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-success border-0" id="pendingToAcceptedSuccess" role="alert" aria-live="assertive" aria-atomic="true">
@@ -253,6 +277,30 @@
             <div class="d-flex">
                 <div class="toast-body">
                     借阅接受失败！
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- pending->rejected success -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div class="toast align-items-center text-white bg-success border-0" id="pendingToRejectedSuccess" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    借阅拒绝成功！
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- pending->rejected failed -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div class="toast align-items-center text-white bg-danger border-0" id="pendingToRejectedFailed" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    借阅拒绝失败！
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -383,9 +431,10 @@
                 now = now.toLocaleDateString().replace('/','-').replace('/','-');
                 now_Date = new Date(now);
                 deadline_Date = new Date(deadline);
+                deadline = deadline + ':00';
                 if(deadline_Date >= now_Date)
                 {
-                    $.post('{{url('rental/pending/toaccept')}}', {id: rentid, request_processed_at: now}, function (res) {
+                    $.post('{{url('rental/pending/toaccept')}}', {id: rentid, deadline: deadline}, function (res) {
                         if(res.code === 200)
                         {
                             $('#pendingToAcceptedSuccess').toast('show');
@@ -404,6 +453,36 @@
                 else{
                     $('#pendingToAcceptedFormValidationFailed').toast('show');
                 }
+            });
+
+            // 拒绝借阅模态框需要的值
+            $('body').on('click', '#rejectrental', function (event) {
+                event.preventDefault();
+                rentid = $(this).data('id');
+                $.get('/rental/' + 'find/', {id: rentid}, function (data) {
+                    $('#rj_username').text('用户名：' + data.user.name);
+                    $('#rj_bookname').text('书名：' + data.book.title);
+                })
+            })
+
+            // 拒绝借阅
+            $('.reject-rental-submit').click(function () {
+
+                $.post('{{url('rental/pending/toreject')}}', {id: rentid}, function (res) {
+                    if(res.code === 200)
+                    {
+                        $('#pendingToRejectedSuccess').toast('show');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                    else {
+                        $('#pendingToRejectedFailed').toast('show');
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                }, 'json');
             });
 
             // 点击导航栏按钮

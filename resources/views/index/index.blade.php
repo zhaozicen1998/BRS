@@ -21,7 +21,7 @@
                         <img src="{{asset('image/tab-1.png')}}" alt="tab-1">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#searchModal" data-toggle="modal">搜索书籍</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#searchModal" data-bs-toggle="modal">搜索书籍</button>
                         <p class="mb-2">通过书名，作者名进行搜索</p>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                         <img src="{{asset('image/tab-2.png')}}" alt="tab-2">
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#genresModal" data-toggle="modal">按类索引</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#genresModal" data-bs-toggle="modal">按类索引</button>
                         <p class="mb-2">依分类展示本馆所有书籍</p>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                             <img src="{{asset('image/tab-3.png')}}" alt="tab-3">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#myRentalModal" data-toggle="modal">我的借阅</button>
+                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('myrental')}}">我的借阅</a>
                             <p class="mb-2">管理我的借阅详细信息</p>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                             <img src="{{asset('image/tab-4.png')}}" alt="tab-4">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#addBooksModal" data-toggle="modal">添加新书</button>
+                            <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#addBooksModal" data-bs-toggle="modal">添加新书</button>
                             <p class="mb-2">向系统中添加新的书</p>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                             <img src="{{asset('image/tab-5.png')}}" alt="tab-5">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#genresManageModal" data-toggle="modal">流派列表</button>
+                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('genre/list')}}">流派列表</a>
                             <p class="mb-2">管理系统中所有的流派</p>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                             <img src="{{asset('image/tab-6.png')}}" alt="tab-5">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#genresManageModal" data-toggle="modal">添加流派</button>
+                            <button class="btn btn-outline-dark my-2 my-sm-3" data-bs-target="#addGenresModal" data-bs-toggle="modal">添加流派</button>
                             <p class="mb-2">向系统中添加新的流派</p>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                             <img src="{{asset('image/tab-3.png')}}" alt="tab-3">
                         </div>
                         <div class="flex-grow-1 ms-3">
-                            <button class="btn btn-outline-dark my-2 my-sm-3" data-target="#borrowManageModal" data-toggle="modal">借阅管理</button>
+                            <a class="btn btn-outline-dark my-2 my-sm-3" href="{{url('rental')}}">借阅管理</a>
                             <p class="mb-2">管理系统中所有的借阅</p>
                         </div>
                     </div>

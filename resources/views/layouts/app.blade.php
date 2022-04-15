@@ -24,12 +24,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse mt-2" id="navbarSupportedContent">
-                <a href="#" class="navbar-brand">
+                <a href="{{url('/')}}" class="navbar-brand">
                     <img src="{{ asset('image/logo.svg') }}" width="30" height="30" class="d-inline-block align-text-top" alt="">
                     图书管理系统
                 </a>
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#"><span class="glyphicon glyphicon-home"></span>首页</a>
+                    <a class="nav-item nav-link active" href="{{url('/')}}"><span class="glyphicon glyphicon-home"></span>首页</a>
                     <a class="nav-item nav-link" href="#" data-bs-target="#searchModal" data-bs-toggle="modal">搜索</a>
                     <a class="nav-item nav-link" href="#" data-bs-target="#genresModal" data-bs-toggle="modal">按类索引</a>
                     @if(!empty(session('user')))

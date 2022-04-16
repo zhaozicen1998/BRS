@@ -53,6 +53,7 @@
                             @endfor
                             </tbody>
                         </table>
+                        <div style="text-align: center; margin:0 auto">{{$results->links()}}</div>
                     </div>
                 </div>
             </div>

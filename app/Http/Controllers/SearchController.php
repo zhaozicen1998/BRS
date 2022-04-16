@@ -10,6 +10,7 @@ use Illuminate\Pagination\Paginator;
 class SearchController extends Controller
 {
     // 搜索
+    // Search
     public function search(Request $request)
     {
         Paginator::defaultView('vendor.pagination.bootstrap-5');
@@ -55,6 +56,7 @@ class SearchController extends Controller
 
     // 按类索引
     // 这个模块有冗余代码，后续可以优化
+    // List by genre
     public function genre(Request $request)
     {
         Paginator::defaultView('vendor.pagination.bootstrap-5');
@@ -153,6 +155,7 @@ class SearchController extends Controller
     }
 
     // 书本详情页
+    // Book detail page
     public function searchDetail($id)
     {
         $book = Book::find($id);

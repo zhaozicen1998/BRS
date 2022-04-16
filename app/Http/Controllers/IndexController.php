@@ -6,16 +6,15 @@ use App\Models\Book;
 use App\Models\Borrow;
 use App\Models\Genre;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {
     public function index()
     {
-        $usersCount = DB::table('users')->count();
-        $booksCount = DB::table('books')->count();
-        $genresCount = DB::table('genres')->count();
-        $acceptCount = DB::table('borrows')->where("status","ACCEPTED")->count();
+        $usersCount = User::count();
+        $booksCount = Book::count();
+        $genresCount = Genre::count();
+        $acceptCount = Borrow::where("status","ACCEPTED")->count();
         $data = [
             'usersCount' => $usersCount,
             'booksCount' => $booksCount,

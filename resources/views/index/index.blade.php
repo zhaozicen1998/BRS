@@ -2,7 +2,7 @@
 
 @section('content')
 
-{{--    欢迎框--}}
+{{--    欢迎框--}}{{-- Welcome--}}
     <div class="container mb-4">
         @if(empty(session('user')))
             <h2 class="index-h2">「Welcome, visitor!」</h2>
@@ -14,7 +14,7 @@
 
 {{--     功能框--}}
         <div class="row index-content ms-auto" style="width: 100%">
-{{--            搜索书籍--}}
+{{--            搜索书籍--}}{{--  Search books--}}
             <div class="col-lg-4 mb-4 mt-4">
                 <div class="d-flex">
                     <div class="flex-shrink-0">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-{{--      按分类展示--}}
+{{--      按分类展示--}}{{-- List by genre--}}
             <div class="col-lg-4 mb-4 mt-4">
                 <div class="d-flex">
                     <div class="flex-shrink-0">
@@ -39,7 +39,9 @@
                 </div>
             </div>
 {{--根据用户是否登陆，用户类型判断显示的功能按钮--}}
+{{--Function buttons to be displayed depending on whether the user is logged in or not and the type of user--}}
             @if(empty(session('user')))
+{{--                More features--}}
                 <div class="col-lg-4 mb-4 mt-4">
                     <div class="d-flex">
                         <div class="flex-shrink-0">
@@ -52,7 +54,7 @@
                     </div>
                 </div>
             @elseif(session('user')['is_librarian'] == 0)
-                {{--我的借阅--}}
+{{--我的借阅--}}{{--My rentals--}}
                 <div class="col-lg-4 mb-4 mt-4">
                     <div class="d-flex">
                         <div class="flex-shrink-0">
@@ -65,7 +67,7 @@
                     </div>
                 </div>
             @else
-                {{--添加新书--}}
+{{--添加新书--}}{{--Add new book--}}
                 <div class="col-lg-4 mb-4 mt-4">
                     <div class="d-flex">
                         <div class="flex-shrink-0">
@@ -77,7 +79,7 @@
                         </div>
                     </div>
                 </div>
-                {{--流派列表--}}
+{{--流派列表--}}{{--Genre list--}}
                 <div class="col-lg-4 mb-4 mt-4">
                     <div class="d-flex">
                         <div class="flex-shrink-0">
@@ -89,7 +91,7 @@
                         </div>
                     </div>
                 </div>
-                {{--添加流派--}}
+{{--添加流派--}}{{--Add new genre--}}
                 <div class="col-lg-4 mb-4 mt-4">
                     <div class="d-flex">
                         <div class="flex-shrink-0">
@@ -101,7 +103,7 @@
                         </div>
                     </div>
                 </div>
-                {{--管理所有借阅--}}
+{{--管理所有借阅--}}{{--Rental list--}}
                 <div class="col-lg-4 mb-4 mt-4">
                     <div class="d-flex">
                         <div class="flex-shrink-0">
@@ -117,7 +119,7 @@
         </div>
     </div>
 
-    {{--    页脚--}}
+{{--    页脚--}}{{--Footer--}}
     <footer class="footer bg-dark p-5 text-light text-center">
         <p class="m-1">Number of users in the system: {{$usersCount}}，Number of books: {{$booksCount}}，Number of genres: {{$genresCount}}</p>
         <p class="m-1">Number of active book rentals: {{$acceptCount}}</p>

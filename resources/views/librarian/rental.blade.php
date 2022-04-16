@@ -3,8 +3,8 @@
 @section('content')
 
     <div class="container-fluid">
-        <h2 class="index-h2">「借阅管理」</h2>
-        <p class="index-h2-p mb-5 mt-3">点击下面的导航栏选择借阅类型</p>
+        <h2 class="index-h2">「Rental list」</h2>
+        <p class="index-h2-p mb-5 mt-3">Click on the navigation bar below to select the type of rental</p>
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
@@ -29,13 +29,13 @@
                         <table class="table table-hover table-striped" style="width: 95%;margin: 0 auto">
                             <thead>
                             <tr>
-                                <th scope="col">序号</th>
-                                <th scope="col">书名</th>
-                                <th scope="col">作者</th>
-                                <th scope="col">操作日期</th>
-                                <th scope="col">借阅者</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Book title</th>
+                                <th scope="col">Author</th>
+                                <th scope="col">Date of rental</th>
+                                <th scope="col">Renter</th>
                                 <th scope="col">deadline</th>
-                                <th scope="col" class="text-center">功能</th>
+                                <th scope="col" class="text-center">Functions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -48,13 +48,13 @@
                                     <td>{{$users[$x]->get()->pluck('name')->first()}}</td>
                                     <td>{{$results[$x]['deadline']}}</td>
                                     <td class="text-center">
-                                        <button class="btn btn-primary btn-xs" id="bookdetails" data-bs-target="#bookDetailModal" data-bs-toggle="modal" data-id="{{$books[$x]->get()->pluck('id')->first()}}">书本详情</button>
-                                        <button class="btn btn-warning btn-xs" id="rentaldetails" data-bs-target="#rentalDetailModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">借阅详情</button>
+                                        <button class="btn btn-primary btn-xs" id="bookdetails" data-bs-target="#bookDetailModal" data-bs-toggle="modal" data-id="{{$books[$x]->get()->pluck('id')->first()}}">Book Details</button>
+                                        <button class="btn btn-warning btn-xs" id="rentaldetails" data-bs-target="#rentalDetailModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">Rent Details</button>
                                         @if($results[$x]['status'] === "PENDING")
-                                            <button class="btn btn-success btn-xs" id="acceptrental" data-bs-target="#acceptRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}} ">接受</button>
-                                            <button class="btn btn-danger btn-xs" id="rejectrental" data-bs-target="#rejectRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">拒绝</button>
+                                            <button class="btn btn-success btn-xs" id="acceptrental" data-bs-target="#acceptRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">Accept</button>
+                                            <button class="btn btn-danger btn-xs" id="rejectrental" data-bs-target="#rejectRentalModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">Reject</button>
                                         @elseif($results[$x]['status'] === "ACCEPTED")
-                                            <button class="btn btn-success btn-xs" id="returnbook" data-bs-target="#returnBookModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">还书</button>
+                                            <button class="btn btn-success btn-xs" id="returnbook" data-bs-target="#returnBookModal" data-bs-toggle="modal" data-id="{{$results[$x]['id']}}">Return</button>
                                         @endif
                                     </td>
                                 </tr>
@@ -67,12 +67,12 @@
         </div>
     </div>
 
-    <!-- 书本详情模态框 -->
+{{--    <!-- 书本详情模态框 -->Book Details Modal Box--}}
     <div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">书籍详情</h5>
+                    <h5 class="modal-title">Book details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="row modal-body">
@@ -82,15 +82,15 @@
                             <p id="d_description"></p>
                         </div>
                         <div class="form-group mb-3 col-lg-12">
-                            <label for="d_date_of_publish" class="col-form-label">出版日期：</label>
+                            <label for="d_date_of_publish" class="col-form-label">Date of publish:</label>
                             <textarea id="d_date_of_publish" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                         </div>
                         <div class="form-group mb-3 col-lg-6">
-                            <label for="d_number_of_pages" class="col-form-label">页数：</label>
+                            <label for="d_number_of_pages" class="col-form-label">Pages:</label>
                             <textarea id="d_number_of_pages" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                         </div>
                         <div class="form-group mb-3 col-lg-6">
-                            <label for="d_language" class="col-form-label">语言：</label>
+                            <label for="d_language" class="col-form-label">Language:</label>
                             <textarea id="d_language" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                         </div>
                     </div>
@@ -98,15 +98,15 @@
                         <form onsubmit="return false;">
                             <div class="form-group">
                                 <div class="form-group mb-3">
-                                    <label for="d_title" class="col-form-label">标题：</label>
+                                    <label for="d_title" class="col-form-label">Title:</label>
                                     <textarea id="d_title" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="d_author" class="col-form-label">作者：</label>
+                                    <label for="d_author" class="col-form-label">Author:</label>
                                     <textarea id="d_author" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="d_genre" class="col-form-label">类型：</label>
+                                    <label for="d_genre" class="col-form-label">Genre:</label>
                                     <select class="form-select" aria-label="d_genre_name" disabled>
                                         <option id="d_genre_name" selected></option>
                                     </select>
@@ -133,44 +133,44 @@
                 <div class="modal-footer">
                     @if(!empty(session('user')))
                         @if(session('user')['is_librarian'] == 0)
-                            <button class="btn btn-success" disabled>借这本书</button>
+                            <button class="btn btn-success" disabled>Borrow this book</button>
                         @endif
                     @endif
-                    <button class="btn btn-primary" data-bs-dismiss="modal">确认</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 借阅详情模态框 -->
+{{--    <!-- 借阅详情模态框 -->Rental details modal box--}}
     <div class="modal fade" id="rentalDetailModal" tabindex="-1" aria-labelledby="rentalDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5>借阅详情</h5>
+                    <h5>Rental details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form onsubmit="return false;">
                         <div class="row form-group">
                             <div class="form-group col-sm-6 mb-3">
-                                <label for="r_name" class="col-form-label">借阅者姓名：</label>
+                                <label for="r_name" class="col-form-label">Renter's name:</label>
                                 <textarea id="r_name" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-6 mb-3">
-                                <label for="r_created_at" class="col-form-label">租借请求日期：</label>
+                                <label for="r_created_at" class="col-form-label">Date of rental:</label>
                                 <textarea id="r_created_at" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-12 mb-3">
-                                <label for="r_status" class="col-form-label">状态：</label>
+                                <label for="r_status" class="col-form-label">Status:</label>
                                 <textarea id="r_status" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-6 mb-3" id="r_processed_at_div">
-                                <label for="r_processed_at" class="col-form-label">处理日期：</label>
+                                <label for="r_processed_at" class="col-form-label">Date of procession:</label>
                                 <textarea id="r_processed_at" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-6 mb-3" id="r_request_managed_by_div">
-                                <label for="r_request_managed_by" class="col-form-label">操作员：</label>
+                                <label for="r_request_managed_by" class="col-form-label">Librarian's name:</label>
                                 <textarea id="r_request_managed_by" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-12 mb-3" id="r_deadline_div">
@@ -178,39 +178,39 @@
                                 <textarea id="r_deadline" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-6 mb-3" id="r_returned_at_div">
-                                <label for="r_returned_at" class="col-form-label">还书日期：</label>
+                                <label for="r_returned_at" class="col-form-label">Date of return:</label>
                                 <textarea id="r_returned_at" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-6 mb-3" id="r_return_managed_by_div">
-                                <label for="r_return_managed_by" class="col-form-label">操作员：</label>
+                                <label for="r_return_managed_by" class="col-form-label">Librarian's name:</label>
                                 <textarea id="r_return_managed_by" class="form-control" rows="1" style="height: 35px;" readonly></textarea>
                             </div>
                             <div class="form-group col-sm-12 mb-3" id="r_late_return_div">
-                                <p id="r_late_return" style="color: red">该图书借阅已经超期！</p>
+                                <p id="r_late_return" style="color: red">The rental is late!</p>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" data-bs-dismiss="modal">确认</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 接受借阅申请模态框 -->
+{{--    <!-- 接受借阅申请模态框 -->Accepting rental requests modal box--}}
     <div class="modal fade" id="acceptRentalModal" tabindex="-1" aria-labelledby="acceptRentalModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">接受</h5>
+                    <h5 class="modal-title">Accept</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>您确定要接受此借阅请求吗？</p>
+                    <p>Are you sure you want to accept this rental request?</p>
                     <form class="was-validated" onsubmit="return false;">
                         <div class="form-group mb-3">
-                            <label for="ac_deadline" class="col-form-label">设置deadline：</label>
+                            <label for="ac_deadline" class="col-form-label">Set deadline：</label>
                             <input type="datetime-local" id="ac_deadline" class="form-control" required>
                             <div class="invalid-feedback">No earlier than the current time</div>
                         </div>
@@ -219,50 +219,50 @@
                     <p id="ac_bookname" style="color: red"></p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button class="btn btn-success accept-rental-submit">接受</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success accept-rental-submit">Accept</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 拒绝借阅申请模态框 -->
+{{--    <!-- 拒绝借阅申请模态框 -->Reject of rental request modal box--}}
     <div class="modal fade" id="rejectRentalModal" tabindex="-1" aria-labelledby="rejectRentalModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">拒绝</h5>
+                    <h5 class="modal-title">Reject</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>您确定要拒绝此借阅请求吗？</p>
+                    <p>Are you sure you want to reject this rental request?</p>
                     <p id="rj_username" style="color: red"></p>
                     <p id="rj_bookname" style="color: red"></p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button class="btn btn-danger reject-rental-submit">拒绝</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger reject-rental-submit">Reject</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 还书模态框 -->
+{{--    <!-- 还书模态框 -->Book return modal box--}}
     <div class="modal fade" id="returnBookModal" tabindex="-1" aria-labelledby="returnBookModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">还书</h5>
+                    <h5 class="modal-title">Return book</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>确认该书已归还吗？</p>
+                    <p>Are you sure the book has been returned?</p>
                     <p id="rt_username" style="color: red"></p>
                     <p id="rt_bookname" style="color: red"></p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button class="btn btn-success return-book-submit">确认</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-success return-book-submit">Return</button>
                 </div>
             </div>
         </div>
@@ -273,7 +273,7 @@
         <div class="toast align-items-center text-white bg-success border-0" id="pendingToAcceptedSuccess" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    借阅接受成功！
+                    Rental accepted successfully!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -285,7 +285,7 @@
         <div class="toast align-items-center text-white bg-danger border-0" id="pendingToAcceptedFormValidationFailed" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    借阅接受失败！请正确填写deadline！
+                    Rental acceptance failed! Please fill the deadline correct!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -297,7 +297,7 @@
         <div class="toast align-items-center text-white bg-danger border-0" id="pendingToAcceptedFailed" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    借阅接受失败！
+                    Rental acceptance failed!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -309,7 +309,7 @@
         <div class="toast align-items-center text-white bg-success border-0" id="pendingToRejectedSuccess" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    借阅拒绝成功！
+                    Rental reject success!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -321,7 +321,7 @@
         <div class="toast align-items-center text-white bg-danger border-0" id="pendingToRejectedFailed" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    借阅拒绝失败！
+                    Rental reject failed!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -333,7 +333,7 @@
         <div class="toast align-items-center text-white bg-success border-0" id="acceptedToReturnedSuccess" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    还书成功！
+                    Book return success!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -345,7 +345,7 @@
         <div class="toast align-items-center text-white bg-danger border-0" id="acceptedToReturnedFailed" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    还书失败！
+                    Book return failed！
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -358,6 +358,7 @@
             let rentid = 0;
 
             // 书本详情
+            // Book detatils
             $('body').on('click', '#bookdetails', function (event) {
                 event.preventDefault();
                 id = $(this).data('id');
@@ -384,6 +385,7 @@
                 })
                 $.ajaxSettings.async = true;
                 // 没有库存时禁用借书按钮
+                // Disable the borrow button if there are no books in stock
                 $('.borrow-submit').attr("disabled", true);
                 // 若前面没有关闭异步，则这里会有bug
                 d_not_borrowed = $.trim($("#d_not_borrowed").val());
@@ -394,6 +396,7 @@
             });
 
             // 借阅详情
+            // Rent details
             $('body').on('click', '#rentaldetails', function (event) {
                 event.preventDefault();
                 rentid = $(this).data('id');
@@ -408,10 +411,10 @@
                     $('#r_created_at').text(data.data.created_at);
                     $('#r_status').text(data.data.status);
                     $('#r_processed_at').text(data.data.request_processed_at);
-                    $('#r_request_managed_by').text(data.data.request_managed_by);
-                    $('#r_deadline').text(data.data.deadline);
-                    $('#r_returned_at').text(data.data.returned_at);
-                    $('#r_return_managed_by').text(data.data.return_managed_by);
+                    // $('#r_request_managed_by').text(data.requestedManager.name);
+                    // $('#r_deadline').text(data.data.deadline);
+                    // $('#r_returned_at').text(data.returnedManager.name);
+                    // $('#r_return_managed_by').text(data.data.return_managed_by);
                     if(data.data.status === 'PENDING')
                     {
                         $("#r_processed_at_div").hide();
@@ -423,6 +426,7 @@
                     }
                     else if(data.data.status === 'REJECTED')
                     {
+                        $('#r_request_managed_by').text(data.requestedManager.name);
                         $('#r_deadline_div').hide();
                         $('#r_returned_at_div').hide();
                         $('#r_return_managed_by_div').hide();
@@ -430,6 +434,8 @@
                     }
                     else if(data.data.status === 'ACCEPTED')
                     {
+                        $('#r_request_managed_by').text(data.requestedManager.name);
+                        $('#r_deadline').text(data.data.deadline);
                         $('#r_returned_at_div').hide();
                         $('#r_return_managed_by_div').hide();
                         let now = new Date();
@@ -444,12 +450,17 @@
                     }
                     else
                     {
+                        $('#r_request_managed_by').text(data.requestedManager.name);
+                        $('#r_deadline').text(data.data.deadline);
+                        $('#r_returned_at').text(data.returnedManager.name);
+                        $('#r_return_managed_by').text(data.data.return_managed_by);
                         $('#r_late_return_div').hide();
                     }
                 })
             })
 
             // 接受借阅模态框需要的值
+            // the value which 'accept rental' modal box need
             $('body').on('click', '#acceptrental', function (event) {
                 event.preventDefault();
                 rentid = $(this).data('id');
@@ -462,12 +473,13 @@
                 $('#ac_deadline').attr('min', year+"-"+month+"-"+date+"T"+hour+":"+minute);
 
                 $.get('/rental/' + 'find/', {id: rentid}, function (data) {
-                    $('#ac_username').text('用户名：' + data.user.name);
-                    $('#ac_bookname').text('书名：' + data.book.title);
+                    $('#ac_username').text('Username: ' + data.user.name);
+                    $('#ac_bookname').text('Book title: ' + data.book.title);
                 })
             })
 
             // 接受借阅
+            // Accept rental
             $('.accept-rental-submit').click(function () {
 
                 deadline = $.trim($("#ac_deadline").val());
@@ -501,6 +513,7 @@
             });
 
             // 拒绝借阅模态框需要的值
+            // the value which 'reject rental' modal box need
             $('body').on('click', '#rejectrental', function (event) {
                 event.preventDefault();
                 rentid = $(this).data('id');
@@ -511,6 +524,7 @@
             })
 
             // 拒绝借阅
+            // reject rental
             $('.reject-rental-submit').click(function () {
 
                 $.post('{{url('rental/pending/toreject')}}', {id: rentid}, function (res) {
@@ -531,6 +545,7 @@
             });
 
             // 还书模态框需要的值
+            // the value which 'return book' modal box need
             $('body').on('click', '#returnbook', function (event) {
                 event.preventDefault();
                 rentid = $(this).data('id');
@@ -541,6 +556,7 @@
             })
 
             // 还书
+            // Return book
             $('.return-book-submit').click(function () {
 
                 $.post('{{url('rental/returnbook')}}', {id: rentid}, function (res) {
@@ -561,6 +577,7 @@
             });
 
             // 点击导航栏按钮
+            // AJAX
             $('.rentalMenu').on('click', 'a', function(e) {
                 e.preventDefault(); // 阻止链接跳转
                 var url = this.href; // 保存点击的地址

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 class RentalController extends Controller
 {
     // 借书
+    // Borrow book
     public function borrow(Request $request)
     {
         $data = $request->input();
@@ -28,17 +29,18 @@ class RentalController extends Controller
                 'reader_id' => $userid,
                 'status' => "PENDING"
             ]);
-            return response()->json(array('code' => 200, 'msg' => "借阅请求发送成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Loan request sent successfully!"));
         }
         else{
             $status = $book->borrows()->where('reader_id',$userid)->pluck('status')->filter(function ($value, $key) {
                 return $value != 'RETURNED';
             })->values()->all();
-            return response()->json(array('code' => 601, 'msg' => "失败！您对本书有正在进行中的借阅！状态：$status[0]"));
+            return response()->json(array('code' => 601, 'msg' => "FAIL! You have an ongoing loan for this book! Status: $status[0]"));
         }
     }
 
     // 我的借阅
+    // My rental
     public function myrental(Request $request)
     {
         Paginator::defaultView('vendor.pagination.bootstrap-5');
@@ -89,13 +91,18 @@ class RentalController extends Controller
     }
 
     // 借阅详情
+    // Rental detail
     public function rentalDetail($id)
     {
         $borrow = Borrow::find($id);
         $users = Borrow::find($id)->borrowedReader()->first();
+        $requestedManagers = Borrow::find($id)->requestedManager()->first();
+        $returnedManagers = Borrow::find($id)->returnedManager()->first();
         return response()->json([
             'data' => $borrow,
-            'user' => $users
+            'user' => $users,
+            'requestedManager' => $requestedManagers,
+            'returnedManager' => $returnedManagers
         ]);
     }
 }

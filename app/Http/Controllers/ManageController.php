@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class ManageController extends Controller
 {
     // 添加新书
+    // Add new book
     public function addBook(Request $request)
     {
         $data = $request->input();
@@ -34,14 +35,15 @@ class ManageController extends Controller
         $books->cover_image = $data['cover_image'];
         if($books->save())
         {
-            return response()->json(array('code' => 200, 'msg' => "添加成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Add successful!"));
         }
         else{
-            return response()->json(array('code' => 601, 'msg' => "添加失败！"));
+            return response()->json(array('code' => 601, 'msg' => "Add failed!"));
         }
     }
 
     // 添加新书界面
+    // Add new book interface
     public function addBookPage()
     {
 //        $genreNames = Genre::get()->pluck('name')->unique();
@@ -55,6 +57,7 @@ class ManageController extends Controller
     }
 
     // 上传书籍封面
+    // Upload book cover image
     public function photo(Request $request)
     {
         $prefix = "book".mt_rand(1,1000);
@@ -70,6 +73,7 @@ class ManageController extends Controller
     }
 
     // 编辑书本
+    // Edit book
     public function editBook(Request $request)
     {
         $data = $request->input();
@@ -90,29 +94,31 @@ class ManageController extends Controller
 
         if($books->save())
         {
-            return response()->json(array('code' => 200, 'msg' => "修改成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Edit successful!"));
         }
         else
         {
-            return response()->json(array('code' => 601, 'msg' => "修改失败！"));
+            return response()->json(array('code' => 601, 'msg' => "Edit failed!"));
         }
     }
 
     // 删除书本
+    // Delete book
     public function deleteBook(Request $request)
     {
         $data = $request->input();
         $books = Book::find($data['id']);
         if($books->delete())
         {
-            return response()->json(array('code' => 200, 'msg' => "删除成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Delete successful!"));
         }
         else{
-            return response()->json(array('code' => 601, 'msg' => "删除失败！"));
+            return response()->json(array('code' => 601, 'msg' => "Delete failed!"));
         }
     }
 
     // 流派列表
+    // Genre list
     public function genreList(Request $request)
     {
         Paginator::defaultView('vendor.pagination.bootstrap-5');
@@ -124,24 +130,26 @@ class ManageController extends Controller
     }
 
     // 添加新流派
+    // Add new genre
     public function addGenre(Request $request)
     {
         $data = $request->input();
         $exist = Genre::where('name',$data['name'])->where('style',$data['style'])->first();
         if($exist != null)
         {
-            return response()->json(array('code' => 601, 'msg' => "添加失败！流派已存在！"));
+            return response()->json(array('code' => 601, 'msg' => "Failed to add! The genre already exists!"));
         }
         else{
             $genres = new Genre();
             $genres->name = $data['name'];
             $genres->style = $data['style'];
             $genres->save();
-            return response()->json(array('code' => 200, 'msg' => "添加成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Add successful!"));
         }
     }
 
     // 编辑流派页面
+    // Edit genre interface
     public function editGenrePage(Request $request)
     {
         $data = $request->input();
@@ -152,13 +160,14 @@ class ManageController extends Controller
     }
 
     // 编辑流派
+    // Edit genre
     public function editGenre(Request $request)
     {
         $data = $request->input();
         $exist = Genre::where('name',$data['name'])->where('style',$data['style'])->first();
         if($exist != null)
         {
-            return response()->json(array('code' => 601, 'msg' => "编辑失败！流派已存在！"));
+            return response()->json(array('code' => 601, 'msg' => "Edit failed! The genre already exists!"));
         }
         else{
             $genres = Genre::find($data['id']);
@@ -166,30 +175,32 @@ class ManageController extends Controller
             $genres->style = $data['style'];
             if($genres->save())
             {
-                return response()->json(array('code' => 200, 'msg' => "修改成功！"));
+                return response()->json(array('code' => 200, 'msg' => "Edit successful!"));
             }
             else
             {
-                return response()->json(array('code' => 601, 'msg' => "修改失败！"));
+                return response()->json(array('code' => 601, 'msg' => "Edit failed!"));
             }
         }
     }
 
     // 删除流派
+    // Delete genre
     public function deleteGenre(Request $request)
     {
         $data = $request->input();
         $genres = Genre::find($data['id']);
         if($genres->delete())
         {
-            return response()->json(array('code' => 200, 'msg' => "删除成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Delete successful!"));
         }
         else{
-            return response()->json(array('code' => 601, 'msg' => "删除失败！"));
+            return response()->json(array('code' => 601, 'msg' => "Delete failed!"));
         }
     }
 
     // 借阅管理列表
+    // Rental list
     public function rental(Request $request)
     {
         Paginator::defaultView('vendor.pagination.bootstrap-5');
@@ -241,6 +252,7 @@ class ManageController extends Controller
     }
 
     // 给借阅接受、拒绝、还书等的模态框（确认框）传值
+    // Passing values to the modal boxes
     public function rentalFind(Request $request)
     {
         $data = $request->input();
@@ -263,11 +275,11 @@ class ManageController extends Controller
         $borrows->deadline = $data['deadline'];
         if($borrows->save())
         {
-            return response()->json(array('code' => 200, 'msg' => "借阅接受成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Borrowing accepted successfully!"));
         }
         else
         {
-            return response()->json(array('code' => 601, 'msg' => "借阅接受失败！"));
+            return response()->json(array('code' => 601, 'msg' => "Borrowing acceptance failed!"));
         }
     }
 
@@ -281,15 +293,16 @@ class ManageController extends Controller
         $borrows->request_managed_by = session('user')['id'];
         if($borrows->save())
         {
-            return response()->json(array('code' => 200, 'msg' => "借阅拒绝成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Borrowing refusal successful!"));
         }
         else
         {
-            return response()->json(array('code' => 601, 'msg' => "借阅拒绝失败！"));
+            return response()->json(array('code' => 601, 'msg' => "Borrowing refusal failed!"));
         }
     }
 
     // 还书
+    // Return book
     public function returnBook(Request $request)
     {
         $data = $request->input();
@@ -299,11 +312,11 @@ class ManageController extends Controller
         $borrows->return_managed_by = session('user')['id'];
         if($borrows->save())
         {
-            return response()->json(array('code' => 200, 'msg' => "还书成功！"));
+            return response()->json(array('code' => 200, 'msg' => "Book return success!"));
         }
         else
         {
-            return response()->json(array('code' => 601, 'msg' => "还书失败！"));
+            return response()->json(array('code' => 601, 'msg' => "Book return failed!"));
         }
     }
 

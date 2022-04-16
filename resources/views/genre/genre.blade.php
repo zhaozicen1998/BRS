@@ -3,18 +3,18 @@
 @section('content')
 
     <div class="container-fluid">
-        <h2 class="index-h2">「流派列表」</h2>
-        <p class="index-h2-p mb-5 mt-3">当前系统中有如下流派：</p>
+        <h2 class="index-h2">「Genre list」</h2>
+        <p class="index-h2-p mb-5 mt-3">The following genres are currently available in the system:</p>
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <table class="table table-hover table-striped" style="width: 95%;margin: 0 auto">
                         <thead>
                         <tr>
-                            <th scope="col">序号</th>
-                            <th scope="col">名称</th>
-                            <th scope="col">风格</th>
-                            <th scope="col" class="text-center">功能</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Style</th>
+                            <th scope="col" class="text-center">Functions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -24,8 +24,8 @@
                                 <td>{{$result['name']}}</td>
                                 <td>{{$result['style']}}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-primary btn-xs" id="editgenre" data-bs-target="#editGenreModal" data-bs-toggle="modal" data-id="{{$result['id']}}">编辑</button>
-                                    <button class="btn btn-danger btn-xs" id="deletegenre" data-bs-target="#deleteGenreModal" data-bs-toggle="modal" data-id="{{$result['id']}}">删除</button>
+                                    <button class="btn btn-primary btn-xs" id="editgenre" data-bs-target="#editGenreModal" data-bs-toggle="modal" data-id="{{$result['id']}}">Edit</button>
+                                    <button class="btn btn-danger btn-xs" id="deletegenre" data-bs-target="#deleteGenreModal" data-bs-toggle="modal" data-id="{{$result['id']}}">Delete</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -37,24 +37,24 @@
         </div>
     </div>
 
-    <!-- 编辑流派模态框 -->
+{{--    <!-- 编辑流派模态框 -->Edit genre modal box--}}
     <div class="modal fade" id="editGenreModal" tabindex="-1" aria-labelledby="editGenreModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">编辑流派</h5>
+                    <h5 class="modal-title">Edit a genre</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="was-validated" onsubmit="return false;">
                         <div class="row form-group">
                             <div class="form-group mb-3">
-                                <label for="e_genre_name" class="col-form-label">名称：</label>
+                                <label for="e_genre_name" class="col-form-label">Name:</label>
                                 <input type="text" id="e_genre_name" class="form-control" pattern=".{3,255}" required>
                                 <div class="invalid-feedback">3-255 characters</div>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="e_genre_style" class="col-form-label">风格：</label>
+                                <label for="e_genre_style" class="col-form-label">Style:</label>
                                 <select class="form-select" id="e_genre_style" aria-label="e_genre_style" required>
                                     <option value="1">primary</option>
                                     <option value="2">secondary</option>
@@ -70,87 +70,87 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary edit-genre-submit">修改</button>
+                    <button class="btn btn-primary edit-genre-submit">Edit</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 删除流派模态框 -->
+{{--    <!-- 删除流派模态框 -->Delete genre modal box--}}
     <div class="modal fade" id="deleteGenreModal" tabindex="-1" aria-labelledby="deleteGenreModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">删除</h5>
+                    <h5 class="modal-title">Delete</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>您确定要删除本流派吗？</p>
+                    <p>Are you sure you want to delete this genre?</p>
                     <p id="del_name" style="color: red"></p>
                     <p id="del_style" style="color: red"></p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button class="btn btn-danger delete-genre-submit">删除</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger delete-genre-submit">Delete</button>
                 </div>
             </div>
         </div>
     </div>
 
-    {{--    编辑流派成功后的弹窗--}}
+{{--    --}}{{--    编辑流派成功后的弹窗--}}{{--Pop-up window after successful editing the genre--}}
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-success border-0" id="editGenreSuccess" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    编辑流派成功！
+                    Editing genre success!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
 
-    {{--    编辑流派失败后的弹窗 - 表单验证不通过--}}
+{{--    --}}{{--    编辑流派失败后的弹窗 - 表单验证不通过--}}{{--Pop-up window after failed genre edit - Form validation not passed--}}
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-danger border-0" id="editGenreFormValidationFailed" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    编辑失败！请正确填写信息！
+                    Edit failed! Please fill in the information correctly!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
 
-    {{--    编辑流派失败后的弹窗 - 流派已存在--}}
+{{--    --}}{{--    编辑流派失败后的弹窗 - 流派已存在--}}{{--Pop-up window after failed genre edit - Genre already exists--}}
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-danger border-0" id="editGenreFailed" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    编辑失败！该流派已存在！
+                    Edit failed! The genre already exists!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
 
-    {{--    删除流派成功后的弹窗--}}
+{{--    --}}{{--    删除流派成功后的弹窗--}}{{--Pop-up window after delete genre succeed--}}
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-success border-0" id="deleteGenreSuccess" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    删除流派成功！
+                    Deleting genre successfully!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
         </div>
     </div>
 
-    {{--    删除流派失败后的弹窗--}}
+{{--    --}}{{--    删除流派失败后的弹窗--}}{{--Pop-up window after delete genre failed--}}
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         <div class="toast align-items-center text-white bg-danger border-0" id="deleteGenreFailed" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
                 <div class="toast-body">
-                    删除流派失败！
+                    Failed to delete genre!
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -162,6 +162,7 @@
 
         let id = 0;
         // 编辑流派界面
+        // Edit genre interface
         $('body').on('click', '#editgenre', function (event) {
             event.preventDefault();
             id = $(this).data('id');
@@ -177,6 +178,7 @@
         })
 
         // 编辑流派
+        // Edit genre
         $('.edit-genre-submit').click(function () {
             gname = $.trim($("#e_genre_name").val());
             gstyle = $("#e_genre_style option:selected").text();
@@ -202,16 +204,18 @@
         })
 
         // 删除流派 --- 在模态框中获取流派名称，风格
+        // Delete genre --- get genre name and style in modal box
         $('body').on('click', '#deletegenre', function (event) {
             event.preventDefault();
             id = $(this).data('id');
             $.get('/genre/' + 'edit/', {id: id}, function (data) {
-                $('#del_name').text('流派名称是：' + data.data.name);
-                $('#del_style').text('流派风格是：' + data.data.style);
+                $('#del_name').text('Name of genre is:' + data.data.name);
+                $('#del_style').text('Style of genre is:' + data.data.style);
             })
         })
 
         // 删除流派
+        // Delete genre
         $('.delete-genre-submit').click(function () {
             $.post('{{url('genre/del')}}', {id: id}, function (res) {
                 if(res.code === 200)

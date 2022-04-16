@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('Users', function (Blueprint $table) {
+        Schema::create('Genres', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->integer('is_librarian')->default(0);
-            $table->rememberToken();
+            $table->string("name",255);
+            $table->enum("style",['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark']);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('Genres');
     }
 };

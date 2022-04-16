@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,6 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        Model::unguard(); //解除模型的批量填充限制
+        $this->call(UserSeeder::class);
+        $this->call(GenreSeeder::class);
+        $this->call(BookSeeder::class);
+        $this->call(BorrowSeeder::class);
+        Model::reguard();
     }
 }

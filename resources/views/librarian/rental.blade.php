@@ -61,6 +61,7 @@
                             @endfor
                             </tbody>
                         </table>
+                        <div style="text-align: center; margin:0 auto">{{$results->links()}}</div>
                     </div>
                 </div>
             </div>
@@ -452,8 +453,8 @@
                     {
                         $('#r_request_managed_by').text(data.requestedManager.name);
                         $('#r_deadline').text(data.data.deadline);
-                        $('#r_returned_at').text(data.returnedManager.name);
-                        $('#r_return_managed_by').text(data.data.return_managed_by);
+                        $('#r_returned_at').text(data.data.returned_at);
+                        $('#r_return_managed_by').text(data.returnedManager.name);
                         $('#r_late_return_div').hide();
                     }
                 })

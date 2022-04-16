@@ -48,7 +48,7 @@
                 <button class="btn btn-outline-light my-2 my-sm-0" style="margin-left: 10px" data-bs-target="#registerModal" data-bs-toggle="modal">Register</button>
                 <button class="btn btn-outline-light my-2 my-sm-0" style="margin-left: 10px" data-bs-target="#loginModal" data-bs-toggle="modal">Login</button>
             @else
-                <a class="nav-item nav-link active" href="#" style="color: whitesmoke">{{session('user')['username']}}</a>
+                <a tabindex="0" class="nav-item nav-link active" href="#" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-container="body" title="My account" style="color: whitesmoke">{{session('user')['username']}}</a>
                 <button class="btn btn-outline-light log-out my-2 my-sm-0" style="margin-left: 10px">Logout</button>
             @endif
 
@@ -445,6 +445,20 @@
         </div>
     </div>
 
+{{--    账户信息--}}{{--My account--}}
+    <div id="popover-content" style="display: none;">
+        <div class="row">
+            <div class="col-4">
+                <img width="80px" height="80px" src="{{asset('image/logo.svg')}}"/>
+            </div>
+            <div class="col-8">
+                <p id="mname"></p>
+                <p id="memail"></p>
+                <p id="mrole"></p>
+            </div>
+        </div>
+    </div>
+
     <script>
 
         $(document).ready(function () {
@@ -504,6 +518,28 @@
                     }
                 }, 'json');
             });
+
+            // My account popover
+            $.get("{{url('myaccount')}}", function (data) {
+                $('#mname').html("Username: " + data.user.name);
+                $('#memail').html("Email: " + data.user.email);
+                if(data.user.is_librarian === 0)
+                {
+                    $('#mrole').html("Role: Reader");
+                }
+                else
+                {
+                    $('#mrole').html("Role: Librarian");
+                }
+            })
+
+            $('[data-bs-toggle="popover"]').popover({
+                html: true,
+                container: 'body',
+                content: function () {
+                    return $('#popover-content').html();
+                }
+            })
 
             // Register
             $(".register-submit").attr("disabled", true);

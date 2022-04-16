@@ -30,6 +30,8 @@ Route::post('/login',[UserController::class,'login']);
 Route::post('/register',[UserController::class,'register']);
 Route::get('/logout',[UserController::class, 'logout']);
 
+Route::get('/myaccount',[UserController::class,'myAccount']);
+
 Route::get('/search',[SearchController::class,'search']);
 Route::get('/search/detail/{id}',[SearchController::class,'searchDetail']);
 Route::get('/genre',[SearchController::class,'genre']);

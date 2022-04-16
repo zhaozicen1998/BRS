@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Borrow;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,5 +46,16 @@ class UserController extends Controller
         else{
             return response()->json(array('code' => 601, 'msg' => "Incorrect username or password!"));
         }
+    }
+
+    // 用户详细信息
+    // My account
+    public function myAccount()
+    {
+        $userid = session('user')['id'];
+        $users = User::find($userid);
+        return response()->json([
+            'user' => $users
+        ]);
     }
 }

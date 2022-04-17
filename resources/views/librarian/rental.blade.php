@@ -10,19 +10,19 @@
                 <div class="panel panel-default">
                     <ul class="nav nav-pills justify-content-center rentalMenu">
                         <li class="nav-item">
-                            <a href="{{url('/rental/pending')}}" class="nav-link active" data-id="pending">Rental requests with PENDING status</a>
+                            <a href="{{url('/rental/pending')}}" class="nav-link active" id="pending" data-id="pending">Rental requests with PENDING status</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/rental/accepted')}}" class="nav-link" data-id="accepted">Accepted and in-time rentals</a>
+                            <a href="{{url('/rental/accepted')}}" class="nav-link" id="accepted" data-id="accepted">Accepted and in-time rentals</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/rental/late')}}" class="nav-link" data-id="late">Accepted late rentals</a>
+                            <a href="{{url('/rental/late')}}" class="nav-link" id="late" data-id="late">Accepted late rentals</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/rental/rejected')}}" class="nav-link" data-id="rejected">Rejected rental requests</a>
+                            <a href="{{url('/rental/rejected')}}" class="nav-link" id="rejected" data-id="rejected">Rejected rental requests</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{url('/rental/returned')}}" class="nav-link" data-id="returned">Returned rentals</a>
+                            <a href="{{url('/rental/returned')}}" class="nav-link" id="returned" data-id="returned">Returned rentals</a>
                         </li>
                     </ul>
                     <div id="table-content">
@@ -357,6 +357,27 @@
         $(document).ready(function(){
             let id = 0;
             let rentid = 0;
+            let url = window.location.href;
+            if(url.indexOf("accepted") >= 0)
+            {
+                $('#accepted').addClass("active");
+                $('#pending').removeClass("active");
+            }
+            else if(url.indexOf("late") >= 0)
+            {
+                $('#late').addClass("active");
+                $('#pending').removeClass("active");
+            }
+            else if(url.indexOf("rejected") >= 0)
+            {
+                $('#rejected').addClass("active");
+                $('#pending').removeClass("active");
+            }
+            else if(url.indexOf("returned") >= 0)
+            {
+                $('#returned').addClass("active");
+                $('#pending').removeClass("active");
+            }
 
             // 书本详情
             // Book detatils
@@ -585,6 +606,14 @@
 
                 $('a.active').removeClass('active');
                 $(this).addClass('active');
+
+                $('#table-content').load(url + ' #table-content').fadeIn('slow');
+            });
+
+            // 分页ajax
+            $('body').on('click', '.pagination a', function(e){
+                e.preventDefault();
+                var url = this.href;
 
                 $('#table-content').load(url + ' #table-content').fadeIn('slow');
             });

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\PaginationHelper;
 use App\Models\Book;
 use App\Models\Borrow;
 use App\Models\Genre;
 use App\Models\User;
 use Carbon\Carbon;
 use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
-use Illuminate\Database\Eloquent\Collection;
+//use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Storage;
+use App\Support\Collection;
 
 class ManageController extends Controller
 {
@@ -239,8 +239,8 @@ class ManageController extends Controller
             $username = $rental->borrowedReader()->pluck('name')->first();
             $users = $users->push(User::where('name',$username));
         }
-        $books = PaginationHelper::paginate($books, 5);
-        $users = PaginationHelper::paginate($users, 5);
+        $books = $books->paginate(5);
+        $users = $users->paginate(5);
         $books = $books->withQueryString();
         $users = $users->withQueryString();
         $data = [

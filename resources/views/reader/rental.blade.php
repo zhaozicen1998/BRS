@@ -308,6 +308,14 @@
 
                 $('#table-content').load(url + ' #table-content').fadeIn('slow');
             });
+
+            // 分页ajax
+            $('body').on('click', '.pagination a', function(e){
+                e.preventDefault();
+                var url = this.href;
+
+                $('#table-content').load(url + ' #table-content').fadeIn('slow');
+            });
         })
     </script>
 

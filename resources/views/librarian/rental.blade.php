@@ -519,8 +519,8 @@
                 event.preventDefault();
                 rentid = $(this).data('id');
                 $.get('/rental/' + 'find/', {id: rentid}, function (data) {
-                    $('#rj_username').text('用户名：' + data.user.name);
-                    $('#rj_bookname').text('书名：' + data.book.title);
+                    $('#rj_username').text('Username: ' + data.user.name);
+                    $('#rj_bookname').text('Bookname: ' + data.book.title);
                 })
             })
 
@@ -551,8 +551,8 @@
                 event.preventDefault();
                 rentid = $(this).data('id');
                 $.get('/rental/' + 'find/', {id: rentid}, function (data) {
-                    $('#rt_username').text('用户名：' + data.user.name);
-                    $('#rt_bookname').text('书名：' + data.book.title);
+                    $('#rt_username').text('Username: ' + data.user.name);
+                    $('#rt_bookname').text('Bookname: ' + data.book.title);
                 })
             })
 

@@ -21,6 +21,6 @@ class UserSeeder extends Seeder
             'password' => 'password',
             'is_librarian' => 1
         ]);
-        User::factory(User::class)->count(50)->create();
+        User::factory(User::class)->count(5)->create();
     }
 }

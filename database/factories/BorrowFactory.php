@@ -15,7 +15,7 @@ class BorrowFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => $this->faker->randomElement(['PENDING', 'ACCEPTED', 'REJECTED', 'RETURNED']),
+            'status' => 'RETURNED',
             'request_processed_at' => $this->faker->time('Y-m-d H:i:s', 'now'),
 //            'deadline' => $this->faker->time('Y-m-d H:i:s'),
             'deadline' => $this->faker->dateTimeBetween('2021-01-01', '2023-02-05'),
@@ -28,5 +28,42 @@ class BorrowFactory extends Factory
             'request_managed_by' => User::factory(),
             'return_managed_by' => User::factory(),
         ];
+    }
+
+    public function pending()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'PENDING',
+                'deadline' => null,
+                'returned_at' => null,
+                'request_processed_at' => null,
+                'request_managed_by' => null,
+                'return_managed_by' => null,
+            ];
+        });
+    }
+
+    public function rejected()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'REJECTED',
+                'deadline' => null,
+                'returned_at' => null,
+                'return_managed_by' => null,
+            ];
+        });
+    }
+
+    public function accepted()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => 'ACCEPTED',
+                'returned_at' => null,
+                'return_managed_by' => null,
+            ];
+        });
     }
 }

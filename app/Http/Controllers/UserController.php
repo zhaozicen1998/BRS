@@ -52,10 +52,12 @@ class UserController extends Controller
     // My account
     public function myAccount()
     {
-        $userid = session('user')['id'];
-        $users = User::find($userid);
-        return response()->json([
-            'user' => $users
-        ]);
+        if(!empty(session(('user')))) {
+            $userid = session('user')['id'];
+            $users = User::find($userid);
+            return response()->json([
+                'user' => $users
+            ]);
+        }
     }
 }

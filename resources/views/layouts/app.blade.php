@@ -511,15 +511,17 @@
         });
         // My account popover
         $.get("{{url('myaccount')}}", function (data) {
-            $('#mname').html("Username: " + data.user.name);
-            $('#memail').html("Email: " + data.user.email);
-            if(data.user.is_librarian === 0)
-            {
-                $('#mrole').html("Role: Reader");
-            }
-            else
-            {
-                $('#mrole').html("Role: Librarian");
+            if(data.length !== 0) {
+                $('#mname').html("Username: " + data.user.name);
+                $('#memail').html("Email: " + data.user.email);
+                if(data.user.is_librarian === 0)
+                {
+                    $('#mrole').html("Role: Reader");
+                }
+                else
+                {
+                    $('#mrole').html("Role: Librarian");
+                }
             }
         })
         $('[data-bs-toggle="popover"]').popover({

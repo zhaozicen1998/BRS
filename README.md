@@ -4,7 +4,7 @@
 
 ### 关于本项目
 
-使用 Laravel + bootstrap5 编写的简单图书管理系统。
+使用 Laravel9 + bootstrap5 编写的简单图书管理系统。
 
 ### 如何使用
 

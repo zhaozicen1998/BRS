@@ -29,9 +29,11 @@
                             <td>{{$result['description']}}</td>
                             <td class="text-center">
                                 <button class="btn btn-success btn-xs" id="bookdetails" data-bs-target="#bookDetailModal" data-bs-toggle="modal" data-id="{{$result['id']}}">Detail</button>
-                                @if(session('user')['is_librarian'] == 1)
-                                    <button class="btn btn-primary btn-xs" id="editbook" data-bs-target="#editBookModal" data-bs-toggle="modal" data-id="{{$result['id']}}">Edit</button>
-                                    <button class="btn btn-danger btn-xs" id="deletebook" data-bs-target="#deleteBookModal" data-bs-toggle="modal" data-id="{{$result['id']}}">Delete</button>
+                                @if(!empty(session('user')))
+                                    @if(session('user')['is_librarian'] == 1)
+                                        <button class="btn btn-primary btn-xs" id="editbook" data-bs-target="#editBookModal" data-bs-toggle="modal" data-id="{{$result['id']}}">Edit</button>
+                                        <button class="btn btn-danger btn-xs" id="deletebook" data-bs-target="#deleteBookModal" data-bs-toggle="modal" data-id="{{$result['id']}}">Delete</button>
+                                    @endif
                                 @endif
                             </td>
                         </tr>
